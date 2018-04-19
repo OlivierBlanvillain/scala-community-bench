@@ -14,19 +14,9 @@ import scala.language.implicitConversions
 import scala.Predef.wrapString
 import scala.Predef.require
 
-class SudokuBenchmark {
-
-  def run(): Option[Grid] = {
-    solve(grid1)
-  }
-
-  def check(grid: Option[Grid]): Boolean =
-    grid match {
-      case Some(values) =>
-        grid1Solutions.contains(asString(values))
-      case None =>
-        false
-    }
+object SudokuBenchmark extends communitybench.Benchmark {
+  def run(input: String): Option[Grid] =
+    solve(input)
 
   def cross(as: String, bs: String) =
     for (a <- as.map(_.toString); b <- bs.map(_.toString)) yield a + b
@@ -191,7 +181,7 @@ class SudokuBenchmark {
 
   // ################ Search ################
 
-  def solve(grid: String) = search(parseGrid(grid))
+  def solve(grid: String): Option[Grid] = search(parseGrid(grid))
 
   // Using depth-first search and propagation, try all possible values.
   def search(values: Grid): Option[Grid] = {

@@ -50,10 +50,10 @@ import scala.Predef.intWrapper
 /**
  * Richards simulates the task dispatcher of an operating system.
  */
-class RichardsBenchmark {
+object RichardsBenchmark extends communitybench.Benchmark {
   import Richards._
 
-  def run(): (Int, Int) = {
+  def run(input: String): (Int, Int) = {
     val scheduler = new Scheduler()
     scheduler.addIdleTask(ID_IDLE, 0, null, COUNT)
 
@@ -80,11 +80,6 @@ class RichardsBenchmark {
     (scheduler.queueCount, scheduler.holdCount)
   }
 
-  def check(t: (Int, Int)): Boolean = {
-    val (queueCount, holdCount) = t
-    queueCount == EXPECTED_QUEUE_COUNT && holdCount == EXPECTED_HOLD_COUNT
-  }
-
   /**
    * These two constants specify how many times a packet is queued and
    * how many times a task is put on hold in a correct run of richards.
@@ -94,7 +89,6 @@ class RichardsBenchmark {
    */
   final val EXPECTED_QUEUE_COUNT = 2322
   final val EXPECTED_HOLD_COUNT  = 928
-
 }
 
 object Richards {

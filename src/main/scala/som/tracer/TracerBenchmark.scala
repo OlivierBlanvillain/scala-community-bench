@@ -16,7 +16,7 @@
 
 package tracer
 
-class TracerBenchmark {
+object TracerBenchmark extends communitybench.Benchmark {
 
   val config = EngineConfiguration(
     imageWidth = 100,
@@ -30,10 +30,6 @@ class TracerBenchmark {
     renderReflections = true
   )
 
-  def run(): Unit =
+  def run(input: String): Unit =
     new RenderScene().renderScene(config, null)
-
-  def check(t: Unit): Boolean =
-    true
-
 }

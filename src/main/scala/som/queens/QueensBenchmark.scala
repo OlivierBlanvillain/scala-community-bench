@@ -24,13 +24,13 @@ package queens
 
 import scala.Predef.intWrapper
 
-class QueensBenchmark {
+object QueensBenchmark extends communitybench.Benchmark {
   var freeMaxs: Array[Boolean] = _
   var freeRows: Array[Boolean] = _
   var freeMins: Array[Boolean] = _
   var queenRows: Array[Int]    = _
 
-  def run(): Boolean = {
+  def run(input: String): Boolean = {
     var result = true
     (0 until 10).foreach { i =>
       result = result && queens()
@@ -74,6 +74,4 @@ class QueensBenchmark {
     freeMaxs(c + r) = v
     freeMins(c - r + 7) = v
   }
-
-  def check(result: Boolean) = result
 }

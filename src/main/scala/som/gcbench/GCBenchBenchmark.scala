@@ -42,7 +42,7 @@ package gcbench
 
 class Node(var left: Node, var right: Node, var i: Int, var j: Int)
 
-object GCBenchBenchmark {
+object GCBenchBenchmark extends communitybench.Benchmark {
   def run(input: String): Boolean = {
     val (node, doubles) = GCBenchBenchmark.start()
     node != null && doubles(1000) == 1.0 / 1000
