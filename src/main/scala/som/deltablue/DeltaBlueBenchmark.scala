@@ -121,11 +121,13 @@ object DeltaBlueBenchmark extends communitybench.Benchmark {
     if (src.value != 5) throw new Exception("Projection 2 failed")
     change(scale, 5)
     for (i <- 0 until n - 1) {
-      if (dests(i).value != i * 5 + 1000) throw new Exception("Projection 3 failed")
+      if (dests(i).value != i * 5 + 1000)
+        throw new Exception("Projection 3 failed")
     }
     change(offset, 2000)
     for (i <- 0 until n - 1) {
-      if (dests(i).value != i * 5 + 2000) throw new Exception("Projection 4 failed")
+      if (dests(i).value != i * 5 + 2000)
+        throw new Exception("Projection 4 failed")
     }
   }
 

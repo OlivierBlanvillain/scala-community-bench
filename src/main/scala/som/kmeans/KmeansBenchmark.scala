@@ -116,8 +116,8 @@ object KmeansBenchmark extends communitybench.Benchmark {
     val points                 = generatePoints(k, numPoints)
     val means                  = initializeMeans(k, points)
     var centers: GenSeq[Point] = null
-    val result = kMeans(points, means, eta)
-    var sum = 0D
+    val result                 = kMeans(points, means, eta)
+    var sum                    = 0D
     result.foreach { p =>
       sum += p.x
       sum += p.y

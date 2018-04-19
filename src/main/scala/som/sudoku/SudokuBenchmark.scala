@@ -59,7 +59,9 @@ class SudokuBenchmark {
     val iter = gridValues(grid).iterator
     while (iter.hasNext) {
       val (s, d) = iter.next
-      if (digits.contains(d.toString) && !assign(values, s.toString, d.toString))
+      if (digits.contains(d.toString) && !assign(values,
+                                                 s.toString,
+                                                 d.toString))
         return False
     }
 
@@ -148,25 +150,25 @@ class SudokuBenchmark {
       ))
     require(
       peers("C2") == collection.Set("A2",
-                         "B2",
-                         "D2",
-                         "E2",
-                         "F2",
-                         "G2",
-                         "H2",
-                         "I2",
-                         "C1",
-                         "C3",
-                         "C4",
-                         "C5",
-                         "C6",
-                         "C7",
-                         "C8",
-                         "C9",
-                         "A1",
-                         "A3",
-                         "B1",
-                         "B3"))
+                                    "B2",
+                                    "D2",
+                                    "E2",
+                                    "F2",
+                                    "G2",
+                                    "H2",
+                                    "I2",
+                                    "C1",
+                                    "C3",
+                                    "C4",
+                                    "C5",
+                                    "C6",
+                                    "C7",
+                                    "C8",
+                                    "C9",
+                                    "A1",
+                                    "A3",
+                                    "B1",
+                                    "B3"))
   }
 
   // ################ Display as 2-D grid ################

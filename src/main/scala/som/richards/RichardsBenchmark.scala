@@ -149,7 +149,10 @@ class Scheduler {
   }
 
   /// Add the specified task and mark it as running.
-  def addRunningTask(id: Int, priority: Int, queue: Packet, task: Task): Unit = {
+  def addRunningTask(id: Int,
+                     priority: Int,
+                     queue: Packet,
+                     task: Task): Unit = {
     addTask(id, priority, queue, task)
     currentTcb.setRunning()
   }

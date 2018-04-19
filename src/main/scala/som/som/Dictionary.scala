@@ -3,7 +3,8 @@ package som
 import som.Dictionary._
 import scala.Predef.intWrapper
 
-class Dictionary[K <: CustomHash, V <: AnyRef](initialSize: Int = INITIAL_CAPACITY) {
+class Dictionary[K <: CustomHash, V <: AnyRef](
+    initialSize: Int = INITIAL_CAPACITY) {
   private var buckets = new Array[Entry[K, V]](initialSize)
   private var _size   = 0
 
