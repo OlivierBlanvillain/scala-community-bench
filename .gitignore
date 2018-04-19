@@ -1,3 +1,5 @@
 target
 scripts/.coursier*
 scripts/.scalafmt*
+results/
+build.sbt
