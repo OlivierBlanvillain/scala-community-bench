@@ -12,7 +12,7 @@ class Point(val x: Double, val y: Double, val z: Double) {
   override def toString                = s"(${round(x)}, ${round(y)}, ${round(z)})"
 }
 
-class KmeansBenchmark extends benchmarks.Benchmark[GenSeq[Point]] {
+class KmeansBenchmark {
   def generatePoints(k: Int, num: Int): Seq[Point] = {
     val randx = new Random(1)
     val randy = new Random(3)
@@ -107,10 +107,7 @@ class KmeansBenchmark extends benchmarks.Benchmark[GenSeq[Point]] {
     }
   }
 
-  override val runningTime =
-    benchmarks.LongRunningTime
-
-  override def run(): GenSeq[Point] = {
+  def run(): GenSeq[Point] = {
     val numPoints              = 100000
     val eta                    = 0.01
     val k                      = 32
@@ -120,7 +117,7 @@ class KmeansBenchmark extends benchmarks.Benchmark[GenSeq[Point]] {
     kMeans(points, means, eta)
   }
 
-  override def check(result: GenSeq[Point]): Boolean = {
+  def check(result: GenSeq[Point]): Boolean = {
     var sum = 0D
     result.foreach { p =>
       sum += p.x

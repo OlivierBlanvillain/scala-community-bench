@@ -22,10 +22,9 @@
  */
 package bounce
 
-import benchmarks.{BenchmarkRunningTime, ShortRunningTime}
 import som.Random
 
-class BounceBenchmark extends benchmarks.Benchmark[Int] {
+class BounceBenchmark {
   private class Ball(random: Random) {
     private var x: Int    = random.next()  % 500
     private var y: Int    = random.next()  % 500
@@ -52,9 +51,7 @@ class BounceBenchmark extends benchmarks.Benchmark[Int] {
     }
   }
 
-  override val runningTime: BenchmarkRunningTime = ShortRunningTime
-
-  override def run(): Int = {
+  def run(): Int = {
     val random = new Random()
 
     val ballCount = 100
@@ -72,6 +69,6 @@ class BounceBenchmark extends benchmarks.Benchmark[Int] {
     bounces
   }
 
-  override def check(result: Int): Boolean =
+  def check(result: Int): Boolean =
     result == 1331
 }

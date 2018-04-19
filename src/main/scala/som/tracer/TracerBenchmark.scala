@@ -16,9 +16,7 @@
 
 package tracer
 
-import benchmarks.{BenchmarkRunningTime, LongRunningTime}
-
-class TracerBenchmark extends benchmarks.Benchmark[Unit] {
+class TracerBenchmark {
 
   val config = EngineConfiguration(
     imageWidth = 100,
@@ -32,12 +30,10 @@ class TracerBenchmark extends benchmarks.Benchmark[Unit] {
     renderReflections = true
   )
 
-  override val runningTime: BenchmarkRunningTime = LongRunningTime
-
-  override def run(): Unit =
+  def run(): Unit =
     new RenderScene().renderScene(config, null)
 
-  override def check(t: Unit): Boolean =
+  def check(t: Unit): Boolean =
     true
 
 }

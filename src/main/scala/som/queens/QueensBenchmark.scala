@@ -22,17 +22,13 @@
  */
 package queens
 
-import benchmarks.{BenchmarkRunningTime, MediumRunningTime}
-
-class QueensBenchmark extends benchmarks.Benchmark[Boolean] {
+class QueensBenchmark {
   var freeMaxs: Array[Boolean] = _
   var freeRows: Array[Boolean] = _
   var freeMins: Array[Boolean] = _
   var queenRows: Array[Int]    = _
 
-  override val runningTime: BenchmarkRunningTime = MediumRunningTime
-
-  override def run(): Boolean = {
+  def run(): Boolean = {
     var result = true
     (0 until 10).foreach { i =>
       result = result && queens()
@@ -77,5 +73,5 @@ class QueensBenchmark extends benchmarks.Benchmark[Boolean] {
     freeMins(c - r + 7) = v
   }
 
-  override def check(result: Boolean) = result
+  def check(result: Boolean) = result
 }

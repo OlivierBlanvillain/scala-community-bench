@@ -20,7 +20,6 @@
  * SOFTWARE.
  ******************************************************************************/
 package json
-import benchmarks.{BenchmarkRunningTime, LongRunningTime}
 
 /**
  * This benchmark uses a variant of the JsonParser that operates only on
@@ -28,15 +27,12 @@ import benchmarks.{BenchmarkRunningTime, LongRunningTime}
  * comparison of what the SOM implementation does.
  * @author smarr
  */
-class JsonBenchmark extends benchmarks.Benchmark[JsonValue] {
-
-  override val runningTime: BenchmarkRunningTime = LongRunningTime
-
-  override def run(): JsonValue = {
+class JsonBenchmark {
+  def run(): JsonValue = {
     (new JsonPureStringParser(rapBenchmarkMinified)).parse()
   }
 
-  override def check(result: JsonValue): Boolean = {
+  def check(result: JsonValue): Boolean = {
     if (!result.isObject()) { return false }
     if (!result.asObject().get("head").isObject()) { return false }
     if (!result.asObject().get("operations").isArray()) { return false }

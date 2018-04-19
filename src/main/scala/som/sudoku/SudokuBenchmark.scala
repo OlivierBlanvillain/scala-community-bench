@@ -10,21 +10,15 @@
 
 package sudoku
 
-import benchmarks.{BenchmarkRunningTime, LongRunningTime}
-
 import scala.language.implicitConversions
 
-class SudokuBenchmark
-    extends benchmarks.Benchmark[Option[
-      scala.collection.mutable.Map[String, String]]] {
+class SudokuBenchmark {
 
-  override val runningTime: BenchmarkRunningTime = LongRunningTime
-
-  override def run(): Option[Grid] = {
+  def run(): Option[Grid] = {
     solve(grid1)
   }
 
-  override def check(grid: Option[Grid]): Boolean =
+  def check(grid: Option[Grid]): Boolean =
     grid match {
       case Some(values) =>
         grid1Solutions.contains(asString(values))

@@ -45,17 +45,13 @@
 
 package richards
 
-import benchmarks.{BenchmarkRunningTime, ShortRunningTime}
-
 /**
  * Richards simulates the task dispatcher of an operating system.
  */
-class RichardsBenchmark extends benchmarks.Benchmark[(Int, Int)] {
+class RichardsBenchmark {
   import Richards._
 
-  override val runningTime: BenchmarkRunningTime = ShortRunningTime
-
-  override def run(): (Int, Int) = {
+  def run(): (Int, Int) = {
     val scheduler = new Scheduler()
     scheduler.addIdleTask(ID_IDLE, 0, null, COUNT)
 
@@ -82,7 +78,7 @@ class RichardsBenchmark extends benchmarks.Benchmark[(Int, Int)] {
     (scheduler.queueCount, scheduler.holdCount)
   }
 
-  override def check(t: (Int, Int)): Boolean = {
+  def check(t: (Int, Int)): Boolean = {
     val (queueCount, holdCount) = t
     queueCount == EXPECTED_QUEUE_COUNT && holdCount == EXPECTED_HOLD_COUNT
   }

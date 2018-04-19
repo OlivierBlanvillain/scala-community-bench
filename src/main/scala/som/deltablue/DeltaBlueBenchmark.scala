@@ -44,20 +44,15 @@ package deltablue
  * I've kept it this way to avoid deviating too much from the original
  * implementation.
  */
-import benchmarks.{BenchmarkRunningTime, MediumRunningTime}
-
 import scala.collection.mutable.{ArrayBuffer, ListBuffer, Stack}
 
-class DeltaBlueBenchmark extends benchmarks.Benchmark[Unit] {
-
-  override val runningTime: BenchmarkRunningTime = MediumRunningTime
-
-  override def run(): Unit = {
+class DeltaBlueBenchmark {
+  def run(): Unit = {
     chainTest(100)
     projectionTest(100)
   }
 
-  override def check(t: Unit): Boolean =
+  def check(t: Unit): Boolean =
     true
 
   /**

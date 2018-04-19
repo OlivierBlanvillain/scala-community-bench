@@ -1,14 +1,9 @@
 package permute
 
-import benchmarks.{BenchmarkRunningTime, LongRunningTime}
-
-class PermuteBenchmark extends benchmarks.Benchmark[Int] {
+class PermuteBenchmark {
   val size = 6
 
-  override val runningTime: BenchmarkRunningTime =
-    LongRunningTime
-
-  override def run(): Int = {
+  def run(): Int = {
     val permIter = (0 until size).toList.permutations
 
     var count = 0
@@ -19,7 +14,7 @@ class PermuteBenchmark extends benchmarks.Benchmark[Int] {
     count
   }
 
-  override def check(value: Int): Boolean = {
+  def check(value: Int): Boolean = {
     value == factorial(size)
   }
 

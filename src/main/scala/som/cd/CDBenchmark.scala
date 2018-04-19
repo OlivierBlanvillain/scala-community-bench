@@ -21,17 +21,13 @@
  */
 package cd
 
-import benchmarks._
 import som._
 
-class CDBenchmark extends benchmarks.Benchmark[Int] {
-  override val runningTime: BenchmarkRunningTime =
-    LongRunningTime
-
-  override def run(): Int =
+class CDBenchmark {
+  def run(): Int =
     benchmark(100)
 
-  override def check(res: Int): Boolean =
+  def check(res: Int): Boolean =
     res == 4305
 
   def benchmark(numAircrafts: Int): Int = {
