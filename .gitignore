@@ -1,5 +1,5 @@
 target
-scripts/.coursier*
-scripts/.scalafmt*
+scripts/.*
 results/
 build.sbt
+.ipynb_checkpoints/
