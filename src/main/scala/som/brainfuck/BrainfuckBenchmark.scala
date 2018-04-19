@@ -30,8 +30,8 @@ import scala.Predef.genericArrayOps
 import scala.Predef.wrapString
 
 object BrainfuckBenchmark extends communitybench.Benchmark {
-  def run(input: String): String =
-    new Program(input).run
+  def run(input: String): Int =
+    new Program(input).run.size
 }
 
 abstract class Op
