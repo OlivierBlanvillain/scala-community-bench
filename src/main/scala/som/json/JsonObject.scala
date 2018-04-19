@@ -117,7 +117,7 @@ final class JsonObject extends JsonValue {
     if (index != -1 && name.equals(names.at(index))) {
       return index
     }
-    ??? // Not needed for benchmark
+    throw new Exception("Not needed for benchmark")
   }
 
   private class HashIndexTable {

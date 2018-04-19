@@ -45,6 +45,8 @@
 
 package richards
 
+import scala.Predef.intWrapper
+
 /**
  * Richards simulates the task dispatcher of an operating system.
  */

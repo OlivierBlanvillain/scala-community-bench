@@ -23,6 +23,8 @@
 package bounce
 
 import som.Random
+import scala.Predef.intWrapper
+import scala.Predef.genericArrayOps
 
 class BounceBenchmark {
   private class Ball(random: Random) {

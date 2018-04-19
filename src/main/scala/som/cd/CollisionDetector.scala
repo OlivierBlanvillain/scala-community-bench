@@ -1,6 +1,7 @@
 package cd
 
 import java.lang.Boolean.{TRUE, FALSE}
+import scala.Predef.intWrapper
 import som._
 
 final class CollisionDetector {

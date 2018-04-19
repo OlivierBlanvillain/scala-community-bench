@@ -22,6 +22,7 @@
 package cd
 
 import som._
+import scala.Predef.intWrapper
 
 class CDBenchmark {
   def run(): Int =

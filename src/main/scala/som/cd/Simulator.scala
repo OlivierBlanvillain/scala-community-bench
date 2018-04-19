@@ -1,6 +1,7 @@
 package cd
 
 import som._
+import scala.Predef.intWrapper
 
 final class Simulator(numAircraft: Int) {
   val aircraft = new Vector[CallSign]();

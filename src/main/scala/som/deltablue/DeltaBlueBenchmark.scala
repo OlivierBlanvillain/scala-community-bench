@@ -45,6 +45,7 @@ package deltablue
  * implementation.
  */
 import scala.collection.mutable.{ArrayBuffer, ListBuffer, Stack}
+import scala.Predef.intWrapper
 
 class DeltaBlueBenchmark {
   def run(): Unit = {
@@ -89,7 +90,7 @@ class DeltaBlueBenchmark {
       first.value = i
       plan.execute()
       if (last.value != i) {
-        print("Chain test failed.\n{last.value)\n{i}")
+        throw new Exception("Chain test failed.\n{last.value)\n{i}")
       }
     }
   }
@@ -116,16 +117,16 @@ class DeltaBlueBenchmark {
       new ScaleConstraint(src, scale, offset, dst, REQUIRED)
     }
     change(src, 17)
-    if (dst.value != 1170) print("Projection 1 failed")
+    if (dst.value != 1170) throw new Exception("Projection 1 failed")
     change(dst, 1050)
-    if (src.value != 5) print("Projection 2 failed")
+    if (src.value != 5) throw new Exception("Projection 2 failed")
     change(scale, 5)
     for (i <- 0 until n - 1) {
-      if (dests(i).value != i * 5 + 1000) print("Projection 3 failed")
+      if (dests(i).value != i * 5 + 1000) throw new Exception("Projection 3 failed")
     }
     change(offset, 2000)
     for (i <- 0 until n - 1) {
-      if (dests(i).value != i * 5 + 2000) print("Projection 4 failed")
+      if (dests(i).value != i * 5 + 2000) throw new Exception("Projection 4 failed")
     }
   }
 
@@ -211,7 +212,7 @@ abstract class Constraint(val strength: Strength)(implicit planner: Planner) {
     chooseMethod(mark)
     if (!isSatisfied()) {
       if (strength == REQUIRED) {
-        print("Could not satisfy a required constraint!")
+        throw new Exception("Could not satisfy a required constraint!")
       }
       null
     } else {
@@ -222,7 +223,7 @@ abstract class Constraint(val strength: Strength)(implicit planner: Planner) {
         overridden.markUnsatisfied()
       out.determinedBy = this
       if (!planner.addPropagate(this, mark))
-        print("Cycle encountered")
+        throw new Exception("Cycle encountered")
       out.mark = mark
       overridden
     }

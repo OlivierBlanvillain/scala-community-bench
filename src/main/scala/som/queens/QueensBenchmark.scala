@@ -22,6 +22,8 @@
  */
 package queens
 
+import scala.Predef.intWrapper
+
 class QueensBenchmark {
   var freeMaxs: Array[Boolean] = _
   var freeRows: Array[Boolean] = _

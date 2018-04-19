@@ -1,5 +1,7 @@
 package permute
 
+import scala.Predef.intWrapper
+
 class PermuteBenchmark {
   val size = 6
 

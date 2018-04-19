@@ -2,6 +2,7 @@ package kmeans
 
 import scala.collection._
 import scala.util.Random
+import scala.Predef.intWrapper
 
 class Point(val x: Double, val y: Double, val z: Double) {
   private def square(v: Double): Double = v * v
@@ -35,7 +36,7 @@ class KmeansBenchmark {
   }
 
   def findClosest(p: Point, means: GenSeq[Point]): Point = {
-    assert(means.size > 0)
+    scala.Predef.assert(means.size > 0)
     var minDistance = p.squareDistance(means(0))
     var closest     = means(0)
     for (mean <- means) {

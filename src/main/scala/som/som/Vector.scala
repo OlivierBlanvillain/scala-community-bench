@@ -3,6 +3,8 @@ package som
 import java.util.Arrays
 import java.util.Comparator
 
+import scala.Predef.intWrapper
+
 class Vector[E <: AnyRef](initialSize: Int) {
   def this() = this(50)
   var storage: Array[AnyRef] = new Array[AnyRef](initialSize)

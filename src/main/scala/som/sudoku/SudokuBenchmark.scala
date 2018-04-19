@@ -11,6 +11,8 @@
 package sudoku
 
 import scala.language.implicitConversions
+import scala.Predef.wrapString
+import scala.Predef.require
 
 class SudokuBenchmark {
 
@@ -42,7 +44,7 @@ class SudokuBenchmark {
 
   val units = squares.map(s => (s, unitlist.filter(_.contains(s)))).toMap
   val peers =
-    squares.map(s => (s, units(s).flatten.toSet.filterNot(_ == s))).toMap
+    squares.map(s => (s, units(s).toSet.filterNot(_ == s))).toMap
 
   type Grid = scala.collection.mutable.Map[String, String]
   val False                                       = scala.collection.mutable.Map[String, String]()
@@ -57,7 +59,7 @@ class SudokuBenchmark {
     val iter = gridValues(grid).iterator
     while (iter.hasNext) {
       val (s, d) = iter.next
-      if (digits.contains(d) && !assign(values, s, d))
+      if (digits.contains(d.toString) && !assign(values, s.toString, d.toString))
         return False
     }
 
@@ -96,7 +98,7 @@ class SudokuBenchmark {
       return False // Contradiction: removed last value
     } else if (values(s).length == 1) {
       val d2 = values(s)
-      if (!peers(s).forall(s2 => eliminate(values, s2, d2)))
+      if (!peers(s).forall(s2 => eliminate(values, s2.toString, d2)))
         return False
     }
 
@@ -145,7 +147,7 @@ class SudokuBenchmark {
         Vector("A1", "A2", "A3", "B1", "B2", "B3", "C1", "C2", "C3")
       ))
     require(
-      peers("C2") == Set("A2",
+      peers("C2") == collection.Set("A2",
                          "B2",
                          "D2",
                          "E2",
@@ -165,22 +167,21 @@ class SudokuBenchmark {
                          "A3",
                          "B1",
                          "B3"))
-    println("All tests pass")
   }
 
   // ################ Display as 2-D grid ################
 
   // Display these values as a 2-D grid.
   def display(values: Grid) = {
-    val width = squares.map(values(_).length).max + 1
-    val line  = (for (i <- 0 to 2) yield ("-" * width * 3)).mkString("+")
-    for (r <- rows.map(_.toString)) {
-      val cells = (for (c <- cols) yield center(values(r + c), width))
-      println(cells.sliding(3, 3).map(_.mkString).mkString("|"))
-      if ("CF".contains(r))
-        println(line)
-    }
-    println
+    // val width = squares.map(values(_).length).max + 1
+    // val line  = (for (i <- 0 to 2) yield ("-" * width * 3)).mkString("+")
+    // for (r <- rows.map(_.toString)) {
+    //   val cells = (for (c <- cols) yield center(values(r + c), width))
+    //   println(cells.sliding(3, 3).map(_.mkString).mkString("|"))
+    //   if ("CF".contains(r))
+    //     println(line)
+    // }
+    // println
   }
 
   def asString(values: Grid): String =

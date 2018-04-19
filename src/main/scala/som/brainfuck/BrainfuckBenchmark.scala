@@ -26,13 +26,16 @@
 
 package brainfuck
 
+import scala.Predef.genericArrayOps
+import scala.Predef.wrapString
+
 class BrainfuckBenchmark {
   def run(): String = {
     new Program(Program.asText).run
   }
 
   def check(result: String) =
-    Program.expectedOutput == result.size
+    Program.expectedOutput == result.length
 }
 
 abstract class Op

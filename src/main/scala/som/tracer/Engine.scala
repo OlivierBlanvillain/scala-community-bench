@@ -16,6 +16,8 @@
 
 package tracer
 
+import scala.Predef.intWrapper
+
 case class EngineConfiguration(imageWidth: Int = 100,
                                imageHeight: Int = 100,
                                pixelWidth: Int = 2,
@@ -43,7 +45,7 @@ class Engine(val config: EngineConfiguration) {
 
     if (canvasContext != null) {
       canvasContext.fillStyle = color.toString
-      canvasContext.fillRect(x * pxW, y * pxH, pxW, pxH)
+      // canvasContext.fillRect(x * pxW, y * pxH, pxW, pxH)
     } else {
       if (x == y) {
         diagonalColorBrightnessCheckSum += color.brightness()
