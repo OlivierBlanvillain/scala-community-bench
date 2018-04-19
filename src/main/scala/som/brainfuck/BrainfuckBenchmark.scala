@@ -28,6 +28,9 @@ package brainfuck
 
 import scala.Predef.genericArrayOps
 import scala.Predef.wrapString
+import java.lang.String
+import scala.{Int, Unit, Char, Array}
+import stdlib._
 
 object BrainfuckBenchmark extends communitybench.Benchmark {
   def run(input: String): Int =
@@ -54,18 +57,22 @@ class Tape() {
 }
 
 class Program(text: String) {
-  var ops = parse(text.iterator)
+  var ops = parse
+  var i = 0
+  val size = text.length
 
-  def parse(iterator: Iterator[Char]): Array[Op] = {
+  def parse: Array[Op] = {
     var res = Array[Op]()
-    while (iterator.hasNext) {
-      val op = iterator.next() match {
+    while (i < size) {
+      val c = text.charAt(i)
+      i += 1
+      val op = c match {
         case '+' => new Inc(1)
         case '-' => new Inc(-1)
         case '>' => new Move(1)
         case '<' => new Move(-1)
         case '.' => new Print()
-        case '[' => new Loop(parse(iterator))
+        case '[' => new Loop(parse)
         case ']' => return res
         case _   => new Nop()
       }

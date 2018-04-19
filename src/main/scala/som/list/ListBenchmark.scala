@@ -22,6 +22,10 @@
  */
 package list
 
+import scala.{Int, Boolean, Any}
+import java.lang.String
+import scala.Predef.augmentString
+
 object ListBenchmark extends communitybench.Benchmark {
   final class Element(var value: Any, var next: Element = null) {
     def length(): Int = {

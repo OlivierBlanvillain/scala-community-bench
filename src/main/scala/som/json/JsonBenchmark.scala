@@ -21,6 +21,9 @@
  ******************************************************************************/
 package json
 
+import scala.{Int, Boolean}
+import java.lang.String
+
 /**
  * This benchmark uses a variant of the JsonParser that operates only on
  * Strings, which is not very efficient. However, this is a more direct

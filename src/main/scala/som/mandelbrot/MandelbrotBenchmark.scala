@@ -42,6 +42,11 @@
 // http://benchmarksgame.alioth.debian.org/u64q/program.php?test=mandelbrot&lang=yarv&id=3
 package mandelbrot
 
+import scala.{Int, Double, Boolean}
+import java.lang.String
+import scala.Predef.augmentString
+import stdlib._
+
 object MandelbrotBenchmark extends communitybench.Benchmark {
   def run(input: String): Int = {
     val size         = input.toInt

@@ -16,6 +16,9 @@
 
 package tracer
 
+import scala.{Unit, Boolean}
+import java.lang.String
+
 object TracerBenchmark extends communitybench.Benchmark {
 
   val config = EngineConfiguration(

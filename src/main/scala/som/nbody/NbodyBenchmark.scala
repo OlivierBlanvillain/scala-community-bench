@@ -5,6 +5,10 @@
  */
 package nbody
 
+import scala.{Double, Boolean}
+import java.lang.String
+import scala.Predef.augmentString
+
 object NbodyBenchmark extends communitybench.Benchmark {
   def run(input: String): Boolean = {
     val system = new NBodySystem()

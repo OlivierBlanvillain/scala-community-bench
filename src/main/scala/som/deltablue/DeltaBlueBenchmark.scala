@@ -30,6 +30,12 @@
 
 package deltablue
 
+import scala.{Int, Unit, Boolean}
+import java.lang.{Exception, String}
+import stdlib._
+import scala.Predef.intWrapper
+import scala.Predef.augmentString
+
 /**
  * A Scala implementation of the DeltaBlue constraint-solving
  * algorithm, as described in:
@@ -44,9 +50,6 @@ package deltablue
  * I've kept it this way to avoid deviating too much from the original
  * implementation.
  */
-import scala.collection.mutable.{ArrayBuffer, ListBuffer, Stack}
-import scala.Predef.augmentString
-import scala.Predef.intWrapper
 
 object DeltaBlueBenchmark extends communitybench.Benchmark {
   def run(input: String): Unit = {
@@ -84,7 +87,7 @@ object DeltaBlueBenchmark extends communitybench.Benchmark {
     }
     new StayConstraint(last, STRONG_DEFAULT)
     val edit = new EditConstraint(first, PREFERRED)
-    val plan = planner.extractPlanFromConstraints(Seq(edit))
+    val plan = planner.extractPlanFromConstraints(edit :: Nil)
     for (i <- 0 until 100) {
       first.value = i
       plan.execute()
@@ -133,7 +136,7 @@ object DeltaBlueBenchmark extends communitybench.Benchmark {
 
   def change(v: Variable, newValue: Int)(implicit planner: Planner): Unit = {
     val edit = new EditConstraint(v, PREFERRED)
-    val plan = planner.extractPlanFromConstraints(Seq(edit))
+    val plan = planner.extractPlanFromConstraints(edit :: Nil)
     for (i <- 0 until 10) {
       v.value = newValue
       plan.execute()
@@ -624,7 +627,7 @@ class Planner {
    * Extract a plan for resatisfying starting from the output of the
    * given [constraints], usually a set of input constraints.
    */
-  def extractPlanFromConstraints(constraints: Seq[Constraint]) = {
+  def extractPlanFromConstraints(constraints: List[Constraint]) = {
     val sources = new Stack[Constraint]()
     for (c <- constraints) {
       // if not in plan already and eligible for inclusion.
@@ -665,7 +668,7 @@ class Planner {
    * downstream of the given constraint. Answer a collection of
    * unsatisfied constraints sorted in order of decreasing strength.
    */
-  def removePropagateFrom(out: Variable): Seq[Constraint] = {
+  def removePropagateFrom(out: Variable): List[Constraint] = {
     out.determinedBy = null
     out.walkStrength = WEAKEST
     out.stay = true
@@ -684,7 +687,7 @@ class Planner {
         }
       }
     }
-    unsatisfied
+    unsatisfied.toList
   }
 
   def addConstraintsConsumingTo(v: Variable, coll: Stack[Constraint]): Unit = {

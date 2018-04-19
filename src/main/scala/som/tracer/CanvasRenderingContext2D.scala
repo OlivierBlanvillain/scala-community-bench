@@ -1,5 +1,7 @@
 package tracer
 
+import java.lang.String
+
 class CanvasRenderingContext2D {
   var fillStyle: String = ""
 

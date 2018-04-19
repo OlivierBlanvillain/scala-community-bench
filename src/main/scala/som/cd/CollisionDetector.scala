@@ -1,6 +1,7 @@
 package cd
 
 import java.lang.Boolean.{TRUE, FALSE}
+import scala.{Int, Boolean, Unit}
 import scala.Predef.intWrapper
 import som._
 

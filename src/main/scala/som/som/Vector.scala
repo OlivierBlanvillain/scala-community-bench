@@ -4,6 +4,7 @@ import java.util.Arrays
 import java.util.Comparator
 
 import scala.Predef.intWrapper
+import scala.{Int, Unit, Boolean, AnyRef, Array}
 
 class Vector[E <: AnyRef](initialSize: Int) {
   def this() = this(50)

@@ -40,6 +40,9 @@
 
 package gcbench
 
+import scala.{Int, Double, Boolean, Unit, Array}
+import java.lang.String
+
 class Node(var left: Node, var right: Node, var i: Int, var j: Int)
 
 object GCBenchBenchmark extends communitybench.Benchmark {

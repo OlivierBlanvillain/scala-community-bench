@@ -4,6 +4,8 @@ import scala.collection._
 import scala.util.Random
 import scala.Predef.augmentString
 import scala.Predef.intWrapper
+import scala.{Int, Double, Boolean}
+import java.lang.String
 
 class Point(val x: Double, val y: Double, val z: Double) {
   private def square(v: Double): Double = v * v
@@ -11,7 +13,7 @@ class Point(val x: Double, val y: Double, val z: Double) {
     square(that.x - x) + square(that.y - y) + square(that.z - z)
   }
   private def round(v: Double): Double = (v * 100).toInt / 100.0
-  override def toString                = s"(${round(x)}, ${round(y)}, ${round(z)})"
+  override def toString                = "(" + round(x) + "}, " + round(y)+  ", " + round(z) + ")"
 }
 
 object KmeansBenchmark extends communitybench.Benchmark {

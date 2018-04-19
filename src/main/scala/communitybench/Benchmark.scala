@@ -1,12 +1,17 @@
 package communitybench
 
+import scala.{Any, Array, Unit, Int, Long}
+import java.lang.{String, System}
+import scala.Predef.assert
+import scala.Predef.augmentString
+
 abstract class Benchmark {
   def run(input: String): Any
 
   final def main(args: Array[String]): Unit = {
     assert(
-      args.size == 3,
-      s"need to provide a number of iterations, input and expected output (got: ${args.size})")
+      args.length == 3,
+      "need to provide a number of iterations, input and expected output (got: " + args.length + ")")
     val iterations = args(0).toInt
     val input      = args(1)
     val output     = args(2)
@@ -17,7 +22,7 @@ abstract class Benchmark {
   final def dump(times: Array[Long]): Unit = {
     var i = 0
     while (i < times.length) {
-      println(times(i))
+      System.out.println(times(i))
       i += 1
     }
   }
@@ -34,8 +39,8 @@ abstract class Benchmark {
       val end    = System.nanoTime()
 
       if (result.toString != output) {
-        throw new Exception(
-          s"validation failed: expected `$output` got `$result`")
+        throw new java.lang.Exception(
+          "validation failed: expected `" + output + "` got `" + result + "`")
       }
 
       times(i) = end - start

@@ -2,6 +2,7 @@ package som
 
 import som.Dictionary._
 import scala.Predef.intWrapper
+import scala.{Int, Boolean, Unit, Array, AnyRef}
 
 class Dictionary[K <: CustomHash, V <: AnyRef](
     initialSize: Int = INITIAL_CAPACITY) {

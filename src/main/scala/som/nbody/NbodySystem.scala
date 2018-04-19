@@ -6,6 +6,8 @@
 package nbody
 
 import scala.Predef.genericArrayOps
+import scala.{Unit, Double, Array}
+import java.lang.Math
 
 class NBodySystem {
   private[this] val bodies: Array[Body] = createBodies()

@@ -46,6 +46,8 @@
 package richards
 
 import scala.Predef.intWrapper
+import java.lang.String
+import scala.{Int, Boolean, Unit, Array}
 
 /**
  * Richards simulates the task dispatcher of an operating system.
@@ -309,8 +311,6 @@ class TaskControlBlock(val link: TaskControlBlock,
       task
     }
   }
-
-  override def toString = s"tcb { ${task}@${state} }"
 }
 
 /**

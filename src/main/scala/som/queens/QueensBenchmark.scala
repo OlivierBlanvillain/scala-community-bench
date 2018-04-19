@@ -23,6 +23,8 @@
 package queens
 
 import scala.Predef.intWrapper
+import scala.{Int, Boolean, Array, Unit}
+import java.lang.String
 
 object QueensBenchmark extends communitybench.Benchmark {
   var freeMaxs: Array[Boolean] = _
