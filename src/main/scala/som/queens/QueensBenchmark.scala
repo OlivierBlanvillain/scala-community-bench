@@ -31,14 +31,6 @@ object QueensBenchmark extends communitybench.Benchmark {
   var queenRows: Array[Int]    = _
 
   def run(input: String): Boolean = {
-    var result = true
-    (0 until 10).foreach { i =>
-      result = result && queens()
-    }
-    result
-  }
-
-  def queens(): Boolean = {
     freeRows = Array.fill(8)(true)
     freeMaxs = Array.fill(16)(true)
     freeMins = Array.fill(16)(true)

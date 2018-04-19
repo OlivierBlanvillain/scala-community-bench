@@ -43,12 +43,8 @@
 package mandelbrot
 
 object MandelbrotBenchmark extends communitybench.Benchmark {
-  def run(input: String): (Int, Int) = {
-    val size = input.toInt
-    (size, mandelbrot(size))
-  }
-
-  def mandelbrot(size: Int): Int = {
+  def run(input: String): Int = {
+    val size         = input.toInt
     var sum: Int     = 0
     var byteAcc: Int = 0
     var bitNum: Int  = 0

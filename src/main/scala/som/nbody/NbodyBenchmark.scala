@@ -6,7 +6,7 @@
 package nbody
 
 object NbodyBenchmark extends communitybench.Benchmark {
-  def run(input: String): Double = {
+  def run(input: String): Boolean = {
     val system = new NBodySystem()
     val n      = input.toInt
 
@@ -16,6 +16,6 @@ object NbodyBenchmark extends communitybench.Benchmark {
       i += 1
     }
 
-    system.energy()
+    system.energy() == -0.1690859889909308
   }
 }

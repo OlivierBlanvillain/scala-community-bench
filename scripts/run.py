@@ -50,10 +50,22 @@ benchmarks = [
         'bounce.BounceBenchmark',
         'brainfuck.BrainfuckBenchmark',
         'cd.CDBenchmark',
+        'deltablue.DeltaBlueBenchmark',
+        'gcbench.GCBenchBenchmark',
+        'json.JsonBenchmark',
+        'kmeans.KmeansBenchmark',
+        'list.ListBenchmark',
+        'mandelbrot.MandelbrotBenchmark',
+        'nbody.NbodyBenchmark',
+        'permute.PermuteBenchmark',
+        'queens.QueensBenchmark',
+        'richards.RichardsBenchmark',
+        'sudoku.SudokuBenchmark',
+        'tracer.TracerBenchmark',
 ]
 
-runs = 10
-iterations = 1000
+runs = 1
+iterations = 1
 
 if __name__ == "__main__":
     with open('build.sbt', 'w') as build:
@@ -75,5 +87,4 @@ if __name__ == "__main__":
             result = run(cmd)
             with open('results/{}/{}'.format(bench, n), 'w+') as resultfile:
                 resultfile.write(result)
-
 
