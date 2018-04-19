@@ -22,7 +22,7 @@
  */
 package list
 
-class ListBenchmark {
+object ListBenchmark extends communitybench.Benchmark {
   final class Element(var value: Any, var next: Element = null) {
     def length(): Int = {
       if (next == null) {
@@ -33,8 +33,9 @@ class ListBenchmark {
     }
   }
 
-  def run(): Int = {
-    val result = tail(makeList(15), makeList(10), makeList(6))
+  def run(input: String): Int = {
+    val n      = input.toInt
+    val result = tail(makeList(n * 3), makeList(n * 2), makeList(n))
     result.length()
   }
 
@@ -66,7 +67,4 @@ class ListBenchmark {
       z
     }
   }
-
-  def check(result: Int): Boolean =
-    result == 10
 }

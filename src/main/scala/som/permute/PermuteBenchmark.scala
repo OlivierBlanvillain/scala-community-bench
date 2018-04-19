@@ -1,11 +1,11 @@
 package permute
 
 import scala.Predef.intWrapper
+import scala.Predef.augmentString
 
-class PermuteBenchmark {
-  val size = 6
-
-  def run(): Int = {
+object PermuteBenchmark extends communitybench.Benchmark {
+  def run(input: String): Int = {
+    val size     = input.toInt
     val permIter = (0 until size).toList.permutations
 
     var count = 0
@@ -14,10 +14,6 @@ class PermuteBenchmark {
       count += 1
     }
     count
-  }
-
-  def check(value: Int): Boolean = {
-    value == factorial(size)
   }
 
   private def factorial(i: Int): Int = {

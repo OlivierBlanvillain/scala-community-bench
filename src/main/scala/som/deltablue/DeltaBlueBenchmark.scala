@@ -45,16 +45,15 @@ package deltablue
  * implementation.
  */
 import scala.collection.mutable.{ArrayBuffer, ListBuffer, Stack}
+import scala.Predef.augmentString
 import scala.Predef.intWrapper
 
-class DeltaBlueBenchmark {
-  def run(): Unit = {
-    chainTest(100)
-    projectionTest(100)
+object DeltaBlueBenchmark extends communitybench.Benchmark {
+  def run(input: String): Unit = {
+    val n = input.toInt
+    chainTest(n)
+    projectionTest(n)
   }
-
-  def check(t: Unit): Boolean =
-    true
 
   /**
    * This is the standard DeltaBlue benchmark. A long chain of equality

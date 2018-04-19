@@ -2,6 +2,7 @@ package kmeans
 
 import scala.collection._
 import scala.util.Random
+import scala.Predef.augmentString
 import scala.Predef.intWrapper
 
 class Point(val x: Double, val y: Double, val z: Double) {
@@ -13,7 +14,7 @@ class Point(val x: Double, val y: Double, val z: Double) {
   override def toString                = s"(${round(x)}, ${round(y)}, ${round(z)})"
 }
 
-class KmeansBenchmark {
+object KmeansBenchmark extends communitybench.Benchmark {
   def generatePoints(k: Int, num: Int): Seq[Point] = {
     val randx = new Random(1)
     val randy = new Random(3)
@@ -108,17 +109,14 @@ class KmeansBenchmark {
     }
   }
 
-  def run(): GenSeq[Point] = {
-    val numPoints              = 100000
+  def run(input: String): Boolean = {
+    val numPoints              = input.toInt
     val eta                    = 0.01
     val k                      = 32
     val points                 = generatePoints(k, numPoints)
     val means                  = initializeMeans(k, points)
     var centers: GenSeq[Point] = null
-    kMeans(points, means, eta)
-  }
-
-  def check(result: GenSeq[Point]): Boolean = {
+    val result = kMeans(points, means, eta)
     var sum = 0D
     result.foreach { p =>
       sum += p.x

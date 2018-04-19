@@ -5,20 +5,17 @@
  */
 package nbody
 
-class NbodyBenchmark {
-
-  def run(): Double = {
+object NbodyBenchmark extends communitybench.Benchmark {
+  def run(input: String): Double = {
     val system = new NBodySystem()
+    val n      = input.toInt
 
     var i = 0
-    while (i < 250000) {
+    while (i < n) {
       system.advance(0.01)
       i += 1
     }
 
     system.energy()
   }
-
-  def check(result: Double): Boolean =
-    result == -0.1690859889909308
 }

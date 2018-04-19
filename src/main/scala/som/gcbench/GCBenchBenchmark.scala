@@ -40,17 +40,14 @@
 
 package gcbench
 
-class GCBenchBenchmark {
-  def run(): (Node, Array[Double]) = GCBenchBenchmark.start()
-
-  def check(result: (Node, Array[Double])): Boolean =
-    result._1 != null && result._2(1000) == 1.0 / 1000
-
-}
-
 class Node(var left: Node, var right: Node, var i: Int, var j: Int)
 
 object GCBenchBenchmark {
+  def run(input: String): Boolean = {
+    val (node, doubles) = GCBenchBenchmark.start()
+    node != null && doubles(1000) == 1.0 / 1000
+  }
+
   val kStretchTreeDepth: Int   = 18 // about 16Mb
   val kLongLivedTreeDepth: Int = 16 // about 4Mb
   val kArraySize: Int          = 500000 // about 4Mb
