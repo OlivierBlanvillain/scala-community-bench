@@ -51,7 +51,7 @@ benchmarks = [
 ]
 
 runs = 10
-iterations = 100
+iterations = 10000
 
 if __name__ == "__main__":
     with open('build.sbt', 'w') as build:
