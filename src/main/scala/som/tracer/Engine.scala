@@ -46,7 +46,7 @@ class Engine(val config: EngineConfiguration) {
       canvasContext.fillRect(x * pxW, y * pxH, pxW, pxH)
     } else {
       if (x == y) {
-        diagonalColorBrightnessCheckSum += color.brightness
+        diagonalColorBrightnessCheckSum += color.brightness()
       }
     }
   }

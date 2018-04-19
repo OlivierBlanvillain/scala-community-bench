@@ -88,7 +88,7 @@ class Program(text: String) {
     stringBuilder.toString
   }
 
-  def _run(program: Array[Op], tape: Tape, output: StringBuilder) {
+  def _run(program: Array[Op], tape: Tape, output: StringBuilder): Unit = {
     for (op <- program) op match {
       case Inc(x)     => tape.inc(x)
       case Move(x)    => tape.move(x)

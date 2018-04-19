@@ -127,40 +127,40 @@ class Scheduler {
   val blocks                       = new Array[TaskControlBlock](Richards.NUMBER_OF_IDS)
 
   /// Add an idle task to this scheduler.
-  def addIdleTask(id: Int, priority: Int, queue: Packet, count: Int) {
+  def addIdleTask(id: Int, priority: Int, queue: Packet, count: Int): Unit = {
     addRunningTask(id, priority, queue, new IdleTask(this, 1, count))
   }
 
   /// Add a work task to this scheduler.
-  def addWorkerTask(id: Int, priority: Int, queue: Packet) {
+  def addWorkerTask(id: Int, priority: Int, queue: Packet): Unit = {
     addTask(id, priority, queue, new WorkerTask(this, Richards.ID_HANDLER_A, 0))
   }
 
   /// Add a handler task to this scheduler.
-  def addHandlerTask(id: Int, priority: Int, queue: Packet) {
+  def addHandlerTask(id: Int, priority: Int, queue: Packet): Unit = {
     addTask(id, priority, queue, new HandlerTask(this))
   }
 
   /// Add a handler task to this scheduler.
-  def addDeviceTask(id: Int, priority: Int, queue: Packet) {
+  def addDeviceTask(id: Int, priority: Int, queue: Packet): Unit = {
     addTask(id, priority, queue, new DeviceTask(this))
   }
 
   /// Add the specified task and mark it as running.
-  def addRunningTask(id: Int, priority: Int, queue: Packet, task: Task) {
+  def addRunningTask(id: Int, priority: Int, queue: Packet, task: Task): Unit = {
     addTask(id, priority, queue, task)
     currentTcb.setRunning()
   }
 
   /// Add the specified task to this scheduler.
-  def addTask(id: Int, priority: Int, queue: Packet, task: Task) {
+  def addTask(id: Int, priority: Int, queue: Packet, task: Task): Unit = {
     currentTcb = new TaskControlBlock(list, id, priority, queue, task)
     list = currentTcb
     blocks(id) = currentTcb
   }
 
   /// Execute the tasks managed by this scheduler.
-  def schedule() {
+  def schedule(): Unit = {
     currentTcb = list
     while (currentTcb != null) {
       if (currentTcb.isHeldOrSuspended()) {
@@ -258,15 +258,15 @@ class TaskControlBlock(val link: TaskControlBlock,
   var state =
     if (queue == null) TaskState.SUSPENDED else TaskState.SUSPENDED_RUNNABLE
 
-  def setRunning() {
+  def setRunning(): Unit = {
     state = TaskState.RUNNING
   }
 
-  def markAsNotHeld() {
+  def markAsNotHeld(): Unit = {
     state = state & TaskState.NOT_HELD
   }
 
-  def markAsHeld() {
+  def markAsHeld(): Unit = {
     state = state | TaskState.HELD
   }
 
@@ -275,11 +275,11 @@ class TaskControlBlock(val link: TaskControlBlock,
     (state == TaskState.SUSPENDED)
   }
 
-  def markAsSuspended() {
+  def markAsSuspended(): Unit = {
     state = state | TaskState.SUSPENDED
   }
 
-  def markAsRunnable() {
+  def markAsRunnable(): Unit = {
     state = state | TaskState.RUNNABLE
   }
 

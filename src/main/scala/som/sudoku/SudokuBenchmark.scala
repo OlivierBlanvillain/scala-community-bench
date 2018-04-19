@@ -133,7 +133,7 @@ class SudokuBenchmark {
     "834596217659712438271438569745169382923854671186273954417325896562987143398641725"
   )
 
-  def test() {
+  def test(): Unit = {
     require(squares.length == 81)
     require(unitlist.length == 27)
     require(squares.forall(s => units(s).size == 3))

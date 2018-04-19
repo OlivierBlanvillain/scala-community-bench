@@ -98,21 +98,21 @@ abstract class JsonValue {
    *
    * @return <code>true</code> if this value represents the JSON literal <code>true</code>
    */
-  def isTrue(): Boolean = false
+  def isTrue: Boolean = false
 
   /**
    * Detects whether this value represents the JSON literal <code>false</code>.
    *
    * @return <code>true</code> if this value represents the JSON literal <code>false</code>
    */
-  def isFalse(): Boolean = false
+  def isFalse: Boolean = false
 
   /**
    * Detects whether this value represents the JSON literal <code>null</code>.
    *
    * @return <code>true</code> if this value represents the JSON literal <code>null</code>
    */
-  def isNull(): Boolean = false
+  def isNull: Boolean = false
 
   /**
    * Returns this JSON value as {@link JsonObject}, assuming that this value represents a JSON

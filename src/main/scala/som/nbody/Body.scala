@@ -41,7 +41,7 @@ final class Body private () {
            vx: Double,
            vy: Double,
            vz: Double,
-           mass: Double) {
+           mass: Double) = {
     this()
     this.x = x
     this.y = y

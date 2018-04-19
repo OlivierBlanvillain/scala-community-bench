@@ -68,7 +68,7 @@ class DeltaBlueBenchmark {
    * of course, very low. Typical situations lie somewhere between these
    * two extremes.
    */
-  def chainTest(n: Int) {
+  def chainTest(n: Int): Unit = {
     implicit val planner = new Planner()
     var prev: Variable   = null
     var first: Variable  = null
@@ -100,7 +100,7 @@ class DeltaBlueBenchmark {
    * time is measured to change a variable on either side of the
    * mapping and to change the scale and offset factors.
    */
-  def projectionTest(n: Int) {
+  def projectionTest(n: Int): Unit = {
     implicit val planner = new Planner()
     val scale            = new Variable("scale", 10)
     val offset           = new Variable("offset", 1000)
@@ -129,7 +129,7 @@ class DeltaBlueBenchmark {
     }
   }
 
-  def change(v: Variable, newValue: Int)(implicit planner: Planner) {
+  def change(v: Variable, newValue: Int)(implicit planner: Planner): Unit = {
     val edit = new EditConstraint(v, PREFERRED)
     val plan = planner.extractPlanFromConstraints(Seq(edit))
     for (i <- 0 until 10) {
@@ -195,7 +195,7 @@ abstract class Constraint(val strength: Strength)(implicit planner: Planner) {
   def recalculate(): Unit
 
   /// Activate this constraint and attempt to satisfy it.
-  def addConstraint() {
+  def addConstraint(): Unit = {
     addToGraph()
     planner.incrementalAdd(this)
   }
@@ -228,7 +228,7 @@ abstract class Constraint(val strength: Strength)(implicit planner: Planner) {
     }
   }
 
-  def destroyConstraint {
+  def destroyConstraint: Unit = {
     if (isSatisfied())
       planner.incrementalRemove(this)
     removeFromGraph()
@@ -254,13 +254,13 @@ abstract class UnaryConstraint(myOutput: Variable, strength: Strength)(
   addConstraint()
 
   /// Adds this constraint to the constraint graph
-  def addToGraph() {
+  def addToGraph(): Unit = {
     myOutput.addConstraint(this)
     satisfied = false
   }
 
   /// Decides if this constraint can be satisfied and records that decision.
-  def chooseMethod(mark: Int) {
+  def chooseMethod(mark: Int): Unit = {
     satisfied = (myOutput.mark != mark) &&
       Strength.stronger(strength, myOutput.walkStrength)
   }
@@ -268,7 +268,7 @@ abstract class UnaryConstraint(myOutput: Variable, strength: Strength)(
   /// Returns true if this constraint is satisfied in the current solution.
   def isSatisfied() = satisfied
 
-  def markInputs(mark: Int) {
+  def markInputs(mark: Int): Unit = {
     // has no inputs.
   }
 
@@ -280,20 +280,20 @@ abstract class UnaryConstraint(myOutput: Variable, strength: Strength)(
    * 'stay', the value for the current output of this constraint. Assume
    * this constraint is satisfied.
    */
-  def recalculate() {
+  def recalculate(): Unit = {
     myOutput.walkStrength = strength
     myOutput.stay = !isInput
     if (myOutput.stay) execute(); // Stay optimization.
   }
 
   /// Records that this constraint is unsatisfied.
-  def markUnsatisfied() {
+  def markUnsatisfied(): Unit = {
     satisfied = false
   }
 
   def inputsKnown(mark: Int) = true
 
-  def removeFromGraph() {
+  def removeFromGraph(): Unit = {
     if (myOutput != null) myOutput.removeConstraint(this)
     satisfied = false
   }
@@ -307,7 +307,7 @@ abstract class UnaryConstraint(myOutput: Variable, strength: Strength)(
  */
 class StayConstraint(v: Variable, str: Strength)(implicit planner: Planner)
     extends UnaryConstraint(v, str) {
-  def execute() {
+  def execute(): Unit = {
     // Stay constraints do nothing.
   }
 }
@@ -322,7 +322,7 @@ class EditConstraint(v: Variable, str: Strength)(implicit planner: Planner)
   /// Edits indicate that a variable is to be changed by imperative code.
   override val isInput = true
 
-  def execute() {
+  def execute(): Unit = {
     // Edit constraints do nothing.
   }
 }
@@ -350,7 +350,7 @@ abstract class BinaryConstraint(v1: Variable, v2: Variable, strength: Strength)(
    * should flow based on the relative strength of the variables related,
    * and record that decision.
    */
-  def chooseMethod(mark: Int) {
+  def chooseMethod(mark: Int): Unit = {
     if (v1.mark == mark) {
       direction =
         if ((v2.mark != mark && Strength.stronger(strength, v2.walkStrength)))
@@ -381,7 +381,7 @@ abstract class BinaryConstraint(v1: Variable, v2: Variable, strength: Strength)(
   }
 
   /// Add this constraint to the constraint graph.
-  override def addToGraph() {
+  override def addToGraph(): Unit = {
     v1.addConstraint(this)
     v2.addConstraint(this)
     direction = Direction.NONE
@@ -391,7 +391,7 @@ abstract class BinaryConstraint(v1: Variable, v2: Variable, strength: Strength)(
   def isSatisfied() = direction != Direction.NONE
 
   /// Mark the input variable with the given mark.
-  def markInputs(mark: Int) {
+  def markInputs(mark: Int): Unit = {
     input().mark = mark
   }
 
@@ -406,7 +406,7 @@ abstract class BinaryConstraint(v1: Variable, v2: Variable, strength: Strength)(
    * 'stay', the value for the current output of this
    * constraint. Assume this constraint is satisfied.
    */
-  def recalculate() {
+  def recalculate(): Unit = {
     val ihn = input()
     val out = output()
     out.walkStrength = Strength.weakest(strength, ihn.walkStrength)
@@ -415,7 +415,7 @@ abstract class BinaryConstraint(v1: Variable, v2: Variable, strength: Strength)(
   }
 
   /// Record the fact that this constraint is unsatisfied.
-  def markUnsatisfied() {
+  def markUnsatisfied(): Unit = {
     direction = Direction.NONE
   }
 
@@ -424,7 +424,7 @@ abstract class BinaryConstraint(v1: Variable, v2: Variable, strength: Strength)(
     i.mark == mark || i.stay || i.determinedBy == null
   }
 
-  def removeFromGraph() {
+  def removeFromGraph(): Unit = {
     if (v1 != null) v1.removeConstraint(this)
     if (v2 != null) v2.removeConstraint(this)
     direction = Direction.NONE
@@ -445,26 +445,26 @@ class ScaleConstraint(v1: Variable,
     extends BinaryConstraint(v1, v2, strength) {
 
   /// Adds this constraint to the constraint graph.
-  override def addToGraph() {
+  override def addToGraph(): Unit = {
     super.addToGraph()
     scale.addConstraint(this)
     offset.addConstraint(this)
   }
 
-  override def removeFromGraph() {
+  override def removeFromGraph(): Unit = {
     super.removeFromGraph()
     if (scale != null) scale.removeConstraint(this)
     if (offset != null) offset.removeConstraint(this)
   }
 
-  override def markInputs(mark: Int) {
+  override def markInputs(mark: Int): Unit = {
     super.markInputs(mark)
     scale.mark = mark
     offset.mark = mark
   }
 
   /// Enforce this constraint. Assume that it is satisfied.
-  def execute() {
+  def execute(): Unit = {
     if (direction == Direction.FORWARD) {
       v2.value = v1.value * scale.value + offset.value
     } else {
@@ -478,7 +478,7 @@ class ScaleConstraint(v1: Variable,
    * 'stay', the value for the current output of this constraint. Assume
    * this constraint is satisfied.
    */
-  override def recalculate() {
+  override def recalculate(): Unit = {
     val ihn = input()
     val out = output()
     out.walkStrength = Strength.weakest(strength, ihn.walkStrength)
@@ -495,7 +495,7 @@ class EqualityConstraint(v1: Variable, v2: Variable, strength: Strength)(
     implicit planner: Planner)
     extends BinaryConstraint(v1, v2, strength) {
   /// Enforce this constraint. Assume that it is satisfied.
-  def execute() {
+  def execute(): Unit = {
     output().value = input().value
   }
 }
@@ -518,12 +518,12 @@ class Variable(val name: String, var value: Int) {
    * Add the given constraint to the set of all constraints that refer
    * this variable.
    */
-  def addConstraint(c: Constraint) {
+  def addConstraint(c: Constraint): Unit = {
     constraints += c
   }
 
   /// Removes all traces of c from this variable.
-  def removeConstraint(c: Constraint) {
+  def removeConstraint(c: Constraint): Unit = {
     constraints -= c
     if (determinedBy == c) determinedBy = null
   }
@@ -547,7 +547,7 @@ class Planner {
    * the algorithm to avoid getting into an infinite loop even if the
    * constraint graph has an inadvertent cycle.
    */
-  def incrementalAdd(c: Constraint) {
+  def incrementalAdd(c: Constraint): Unit = {
     val mark       = newMark()
     var overridden = c.satisfy(mark)
     while (overridden != null) overridden = overridden.satisfy(mark)
@@ -564,7 +564,7 @@ class Planner {
    * unnecessarily adding and then overriding weak constraints.
    * Assume: [c] is satisfied.
    */
-  def incrementalRemove(c: Constraint) {
+  def incrementalRemove(c: Constraint): Unit = {
     val out = c.output()
     c.markUnsatisfied()
     c.removeFromGraph()
@@ -685,7 +685,7 @@ class Planner {
     unsatisfied
   }
 
-  def addConstraintsConsumingTo(v: Variable, coll: Stack[Constraint]) {
+  def addConstraintsConsumingTo(v: Variable, coll: Stack[Constraint]): Unit = {
     val determining = v.determinedBy
     for (c <- v.constraints) {
       if (c != determining && c.isSatisfied()) coll.push(c)
@@ -701,11 +701,11 @@ class Planner {
 class Plan {
   private val list = new ListBuffer[Constraint]()
 
-  def addConstraint(c: Constraint) {
+  def addConstraint(c: Constraint): Unit = {
     list += c
   }
 
-  def execute() {
+  def execute(): Unit = {
     for (constraint <- list) {
       constraint.execute()
     }
