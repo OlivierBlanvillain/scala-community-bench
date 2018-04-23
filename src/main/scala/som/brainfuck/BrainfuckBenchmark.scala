@@ -1,6 +1,5 @@
 //  Taken from https://github.com/kostya/benchmarks/blob/master/brainfuck2/bf.scala
-//
-//  Copyright (c) 2014 'Konstantin Makarchev'
+// Copyright (c) 2014 'Konstantin Makarchev'
 //
 //    MIT License
 //
@@ -56,35 +55,45 @@ class Tape() {
   }
 }
 
-class Program(text: String) {
-  var ops = parse
-  var i = 0
-  val size = text.length
+class Parser(text: String) {
+  val chars = text.toArray
+  var pos   = 0
 
-  def parse: Array[Op] = {
-    var res = Array[Op]()
-    while (i < size) {
-      val c = text.charAt(i)
-      i += 1
-      val op = c match {
+  def parse(): Array[Op] = {
+    var ops = new java.util.ArrayList[Op]
+    def res = {
+      val arr = new Array[Op](ops.size)
+      ops.toArray(arr)
+      arr
+    }
+
+    while (pos < chars.length) {
+      val char = chars(pos)
+      pos += 1
+
+      val op = char match {
         case '+' => new Inc(1)
         case '-' => new Inc(-1)
         case '>' => new Move(1)
         case '<' => new Move(-1)
         case '.' => new Print()
-        case '[' => new Loop(parse)
+        case '[' => new Loop(parse())
         case ']' => return res
         case _   => new Nop()
       }
 
       op match {
         case Nop() => ()
-        case _     => res :+= op
+        case _     => ops.add(op)
       }
     }
 
     res
   }
+}
+
+class Program(text: String) {
+  var ops = (new Parser(text)).parse()
 
   def run = {
     val stringBuilder = new StringBuilder
