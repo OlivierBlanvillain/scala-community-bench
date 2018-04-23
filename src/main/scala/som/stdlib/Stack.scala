@@ -6,10 +6,10 @@
 **                          |/                                          **
 \*                                                                      */
 
-
 package stdlib
 
 import scala.{Nothing, Int, Unit, Boolean}
+
 /** Factory object for the `mutable.Stack` class.
  *
  *  $factoryInfo

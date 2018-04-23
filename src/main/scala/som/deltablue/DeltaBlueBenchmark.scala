@@ -50,7 +50,6 @@ import scala.Predef.augmentString
  * I've kept it this way to avoid deviating too much from the original
  * implementation.
  */
-
 object DeltaBlueBenchmark extends communitybench.Benchmark {
   def run(input: String): Unit = {
     val n = input.toInt

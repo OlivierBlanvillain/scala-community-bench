@@ -11,6 +11,7 @@ package stdlib
 import scala.{`inline`, Boolean, Unit, Nothing}
 
 object Option {
+
   /** An Option factory which creates Some(x) if the argument is not null,
    *  and None if it is null.
    *
@@ -22,7 +23,7 @@ object Option {
   /** An Option factory which returns `None` in a manner consistent with
    *  the collections hierarchy.
    */
-  def empty[A] : Option[A] = None
+  def empty[A]: Option[A] = None
 
   /** When a given condition is true, evaluates the `a` argument and returns
    *  Some(a). When the condition is false, `a` is not evaluated and None is
@@ -197,10 +198,11 @@ sealed abstract class Option[+A] {
    *  collection with max size 1.
    */
   class WithFilter(p: A => Boolean) {
-    def map[B](f: A => B): Option[B] = self filter p map f
+    def map[B](f: A => B): Option[B]             = self filter p map f
     def flatMap[B](f: A => Option[B]): Option[B] = self filter p flatMap f
-    def foreach[U](f: A => U): Unit = self filter p foreach f
-    def withFilter(q: A => Boolean): WithFilter = new WithFilter(x => p(x) && q(x))
+    def foreach[U](f: A => U): Unit              = self filter p foreach f
+    def withFilter(q: A => Boolean): WithFilter =
+      new WithFilter(x => p(x) && q(x))
   }
 
   /** Tests whether the option contains a given value as an element.
@@ -272,9 +274,8 @@ sealed abstract class Option[+A] {
  */
 final case class Some[+A](value: A) extends Option[A] {
   def isEmpty = false
-  def get = value
+  def get     = value
 }
-
 
 /** This case object represents non-existent values.
  *
@@ -283,5 +284,5 @@ final case class Some[+A](value: A) extends Option[A] {
  */
 case object None extends Option[Nothing] {
   def isEmpty = true
-  def get = throw new scala.NoSuchElementException("None.get")
+  def get     = throw new scala.NoSuchElementException("None.get")
 }

@@ -37,7 +37,6 @@ package stdlib
  *  @define mayNotTerminateInf
  *  @define willNotTerminateInf
  */
-
 import scala.{Int, Array, Long, AnyRef, Any, Unit}
 import java.lang.{String, Math}
 
@@ -46,7 +45,8 @@ class ArrayBuffer[A](protected val initialSize: Int) {
 
   def this() = this(16)
 
-  protected var array: Array[AnyRef] = new Array[AnyRef](Math.max(initialSize, 1))
+  protected var array: Array[AnyRef] =
+    new Array[AnyRef](Math.max(initialSize, 1))
   protected var size0: Int = 0
 
   //##########################################################################
@@ -55,7 +55,7 @@ class ArrayBuffer[A](protected val initialSize: Int) {
   /** Returns the length of this resizable array.
    */
   def length: Int = size0
-  def size = length
+  def size        = length
 
   def apply(idx: Int) = {
     if (idx >= size0) throw new scala.IndexOutOfBoundsException(idx.toString)
@@ -90,10 +90,10 @@ class ArrayBuffer[A](protected val initialSize: Int) {
    *  @param  start starting index.
    *  @param  len number of elements to copy
    */
-   def copyToArray[B >: A](xs: Array[B], start: Int, len: Int): Unit = {
-     val len1 = Math.min(Math.min(len, (xs.length - start)), length)
-     if (len1 > 0) Array.copy(array, 0, xs, start, len1)
-   }
+  def copyToArray[B >: A](xs: Array[B], start: Int, len: Int): Unit = {
+    val len1 = Math.min(Math.min(len, (xs.length - start)), length)
+    if (len1 > 0) Array.copy(array, 0, xs, start, len1)
+  }
 
   //##########################################################################
 
@@ -113,8 +113,7 @@ class ArrayBuffer[A](protected val initialSize: Int) {
     val arrayLength: Long = array.length
     if (n > arrayLength) {
       var newSize: Long = arrayLength * 2
-      while (n > newSize)
-        newSize = newSize * 2
+      while (n > newSize) newSize = newSize * 2
       // Clamp newSize to Int.MaxValue
       if (newSize > Int.MaxValue) newSize = Int.MaxValue
 
@@ -185,8 +184,9 @@ class ArrayBuffer[A](protected val initialSize: Int) {
    *  @throws scala.IndexOutOfBoundsException if `n` is out of bounds.
    */
   def insertAll(n: Int, seq: Traversable[A]): Unit = {
-    if (n < 0 || n > size0) throw new scala.IndexOutOfBoundsException(n.toString)
-    val len = seq.size
+    if (n < 0 || n > size0)
+      throw new scala.IndexOutOfBoundsException(n.toString)
+    val len     = seq.size
     val newSize = size0 + len
     ensureSize(newSize)
 
@@ -205,9 +205,13 @@ class ArrayBuffer[A](protected val initialSize: Int) {
    *  @throws   scala.IllegalArgumentException if `count < 0`.
    */
   def remove(n: Int, count: Int): Unit = {
-    if (count < 0) throw new scala.IllegalArgumentException("removing negative number of elements: " + count.toString)
-    else if (count == 0) return  // Did nothing
-    if (n < 0 || n > size0 - count) throw new scala.IndexOutOfBoundsException("at " + n.toString + " deleting " + count.toString)
+    if (count < 0)
+      throw new scala.IllegalArgumentException(
+        "removing negative number of elements: " + count.toString)
+    else if (count == 0) return // Did nothing
+    if (n < 0 || n > size0 - count)
+      throw new scala.IndexOutOfBoundsException(
+        "at " + n.toString + " deleting " + count.toString)
     copy(n + count, n, size0 - (n + count))
     reduceToSize(size0 - count)
   }

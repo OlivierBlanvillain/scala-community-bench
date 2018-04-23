@@ -8,9 +8,21 @@
 
 package stdlib
 
-import java.lang.{ StringBuilder => JavaStringBuilder }
+import java.lang.{StringBuilder => JavaStringBuilder}
 import java.lang.String
-import scala.{Int, Char, Boolean, Unit, Array, Long, Float, Byte, Double, Short, Any}
+import scala.{
+  Int,
+  Char,
+  Boolean,
+  Unit,
+  Array,
+  Long,
+  Float,
+  Byte,
+  Double,
+  Short,
+  Any
+}
 
 /** A builder for mutable sequence of characters.  This class provides an API
  *  mostly compatible with `java.lang.StringBuilder`, except where there are
@@ -26,11 +38,13 @@ import scala.{Int, Char, Boolean, Unit, Array, Long, Float, Byte, Double, Short,
  *  section on `StringBuilders` for more information.
  */
 final class StringBuilder(private val underlying: JavaStringBuilder) {
+
   /** Constructs a string builder initialized with string value `initValue`
    *  and with additional character capacity `initCapacity`.
    */
   def this(initCapacity: Int, initValue: String) =
-    this(new JavaStringBuilder(initValue.length + initCapacity) append initValue)
+    this(
+      new JavaStringBuilder(initValue.length + initCapacity) append initValue)
 
   /** Constructs a string builder with no characters in it and an
    *  initial capacity of 16 characters.
@@ -56,7 +70,7 @@ final class StringBuilder(private val underlying: JavaStringBuilder) {
     arr
   }
 
-  def length: Int = underlying.length()
+  def length: Int            = underlying.length()
   def length_=(n: Int): Unit = { underlying.setLength(n) }
 
   /** Clears the builder contents.
@@ -86,7 +100,9 @@ final class StringBuilder(private val underlying: JavaStringBuilder) {
    *
    *  @param newCapacity    the minimum desired capacity.
    */
-  def ensureCapacity(newCapacity: Int): Unit = { underlying ensureCapacity newCapacity }
+  def ensureCapacity(newCapacity: Int): Unit = {
+    underlying ensureCapacity newCapacity
+  }
 
   /** Returns the Char at the specified index, counting from 0 as in Arrays.
    *
@@ -234,14 +250,14 @@ final class StringBuilder(private val underlying: JavaStringBuilder) {
    *  @param   x  a primitive value
    *  @return     This StringBuilder.
    */
-  def append(x: Boolean): StringBuilder = { underlying append x ; this }
-  def append(x: Byte): StringBuilder = append(x.toInt)
-  def append(x: Short): StringBuilder = append(x.toInt)
-  def append(x: Int): StringBuilder = { underlying append x ; this }
-  def append(x: Long): StringBuilder = { underlying append x ; this }
-  def append(x: Float): StringBuilder = { underlying append x ; this }
-  def append(x: Double): StringBuilder = { underlying append x ; this }
-  def append(x: Char): StringBuilder = { underlying append x ; this }
+  def append(x: Boolean): StringBuilder = { underlying append x; this }
+  def append(x: Byte): StringBuilder    = append(x.toInt)
+  def append(x: Short): StringBuilder   = append(x.toInt)
+  def append(x: Int): StringBuilder     = { underlying append x; this }
+  def append(x: Long): StringBuilder    = { underlying append x; this }
+  def append(x: Float): StringBuilder   = { underlying append x; this }
+  def append(x: Double): StringBuilder  = { underlying append x; this }
+  def append(x: Char): StringBuilder    = { underlying append x; this }
 
   /** Remove a subsequence of Chars from this sequence, starting at the
    *  given start index (inclusive) and extending to the end index (exclusive)
@@ -283,7 +299,10 @@ final class StringBuilder(private val underlying: JavaStringBuilder) {
    * @throws StringIndexOutOfBoundsException  if index < 0, index > length,
    *         offset < 0, len < 0, or (offset + len) > str.length.
    */
-  def insertAll(index: Int, str: Array[Char], offset: Int, len: Int): StringBuilder = {
+  def insertAll(index: Int,
+                str: Array[Char],
+                offset: Int,
+                len: Int): StringBuilder = {
     underlying.insert(index, str, offset, len)
     this
   }
@@ -296,7 +315,8 @@ final class StringBuilder(private val underlying: JavaStringBuilder) {
    *  @return         this StringBuilder.
    *  @throws StringIndexOutOfBoundsException  if the index is out of bounds.
    */
-  def insert(index: Int, x: Any): StringBuilder = insert(index, String.valueOf(x))
+  def insert(index: Int, x: Any): StringBuilder =
+    insert(index, String.valueOf(x))
 
   /** Inserts the String into this character sequence.
    *
@@ -329,14 +349,20 @@ final class StringBuilder(private val underlying: JavaStringBuilder) {
    *  @param  x     a primitive value.
    *  @return       this StringBuilder.
    */
-  def insert(index: Int, x: Boolean): StringBuilder = insert(index, String.valueOf(x))
-  def insert(index: Int, x: Byte): StringBuilder    = insert(index, x.toInt)
-  def insert(index: Int, x: Short): StringBuilder   = insert(index, x.toInt)
-  def insert(index: Int, x: Int): StringBuilder     = insert(index, String.valueOf(x))
-  def insert(index: Int, x: Long): StringBuilder    = insert(index, String.valueOf(x))
-  def insert(index: Int, x: Float): StringBuilder   = insert(index, String.valueOf(x))
-  def insert(index: Int, x: Double): StringBuilder  = insert(index, String.valueOf(x))
-  def insert(index: Int, x: Char): StringBuilder    = insert(index, String.valueOf(x))
+  def insert(index: Int, x: Boolean): StringBuilder =
+    insert(index, String.valueOf(x))
+  def insert(index: Int, x: Byte): StringBuilder  = insert(index, x.toInt)
+  def insert(index: Int, x: Short): StringBuilder = insert(index, x.toInt)
+  def insert(index: Int, x: Int): StringBuilder =
+    insert(index, String.valueOf(x))
+  def insert(index: Int, x: Long): StringBuilder =
+    insert(index, String.valueOf(x))
+  def insert(index: Int, x: Float): StringBuilder =
+    insert(index, String.valueOf(x))
+  def insert(index: Int, x: Double): StringBuilder =
+    insert(index, String.valueOf(x))
+  def insert(index: Int, x: Char): StringBuilder =
+    insert(index, String.valueOf(x))
 
   /** Finds the index of the first occurrence of the specified substring.
    *
@@ -351,7 +377,8 @@ final class StringBuilder(private val underlying: JavaStringBuilder) {
    *  @param    fromIndex the smallest index in the source string to consider
    *  @return             the first applicable index where target occurs, or -1 if not found.
    */
-  def indexOf(str: String, fromIndex: Int): Int = underlying.indexOf(str, fromIndex)
+  def indexOf(str: String, fromIndex: Int): Int =
+    underlying.indexOf(str, fromIndex)
 
   /** Finds the index of the last occurrence of the specified substring.
    *
@@ -366,7 +393,8 @@ final class StringBuilder(private val underlying: JavaStringBuilder) {
    *  @param    fromIndex the smallest index in the source string to consider
    *  @return             the last applicable index where target occurs, or -1 if not found.
    */
-  def lastIndexOf(str: String, fromIndex: Int): Int = underlying.lastIndexOf(str, fromIndex)
+  def lastIndexOf(str: String, fromIndex: Int): Int =
+    underlying.lastIndexOf(str, fromIndex)
 
   /** Creates a new StringBuilder with the reversed contents of this one.
    *  If surrogate pairs are present, they are treated as indivisible units: each
@@ -374,9 +402,11 @@ final class StringBuilder(private val underlying: JavaStringBuilder) {
    *
    *  @return   the reversed StringBuilder
    */
-  def reverse: StringBuilder = new StringBuilder(new JavaStringBuilder(underlying).reverse)
+  def reverse: StringBuilder =
+    new StringBuilder(new JavaStringBuilder(underlying).reverse)
 
-  override def clone(): StringBuilder = new StringBuilder(new JavaStringBuilder(underlying))
+  override def clone(): StringBuilder =
+    new StringBuilder(new JavaStringBuilder(underlying))
 
   /** Like reverse, but destructively updates the target StringBuilder.
    *

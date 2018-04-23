@@ -31,12 +31,16 @@ object SudokuBenchmark extends communitybench.Benchmark {
   val unitlist =
     cols.map(_.toString).map(cross(rows, _)) ++
       rows.map(_.toString).map(cross(_, cols)) ++
-      (for (rs <- "ABC" :: "DEF" :: "GHI" :: Nil; cs <- "123" :: "456" :: "789" :: Nil)
+      (for (rs <- "ABC" :: "DEF" :: "GHI" :: Nil;
+            cs <- "123" :: "456" :: "789" :: Nil)
         yield cross(rs, cs))
 
   val units = squares.map(s => (s, unitlist.filter(_.contains(s)))).toMap
   val peers =
-    squares.map(s => (s, units(s).flatten(scala.Predef.$conforms).toSet.filterNot(_ == s))).toMap
+    squares
+      .map(s =>
+        (s, units(s).flatten(scala.Predef.conforms).toSet.filterNot(_ == s)))
+      .toMap
 
   type Grid = scala.collection.mutable.Map[String, String]
   val False                                       = scala.collection.mutable.Map[String, String]()
@@ -124,7 +128,7 @@ object SudokuBenchmark extends communitybench.Benchmark {
     "417369825632158947958724316825437169791586432346912758289643571573291684164875293" :: Nil
   val hard1Solutions =
     "874196325359742618261538497145679832783254169926813754417325986598461273632987541" ::
-    "834596217659712438271438569745169382923854671186273954417325896562987143398641725" :: Nil
+      "834596217659712438271438569745169382923854671186273954417325896562987143398641725" :: Nil
 
   // def test(): Unit = {
   //   require(squares.length == 81)

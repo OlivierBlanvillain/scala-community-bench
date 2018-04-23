@@ -39,16 +39,17 @@ import scala.{Int, Any, Boolean, AnyRef, Unit}
  */
 final class ListBuffer[A] {
   def foreach(f: A => Unit): Unit = toList.foreach(f)
+
   /** Expected invariants:
    *  If start.isEmpty, last0 == null
    *  If start.nonEmpty, last0 != null
    *  If len == 0, start.isEmpty
    *  If len > 0, start.nonEmpty
    */
-  private var start: List[A] = Nil
-  private var last0: ::[A] = _
+  private var start: List[A]    = Nil
+  private var last0: ::[A]      = _
   private var exported: Boolean = false
-  private var len = 0
+  private var len               = 0
 
   protected def underlying: List[A] = start
 
@@ -62,7 +63,7 @@ final class ListBuffer[A] {
   def size = length
 
   // Override with efficient implementations using the extra size information available to ListBuffer.
-  def isEmpty: Boolean = len == 0
+  def isEmpty: Boolean  = len == 0
   def nonEmpty: Boolean = len > 0
 
   /** Replaces element at index `n` with the new element
@@ -78,19 +79,19 @@ final class ListBuffer[A] {
     if (n < 0 || n >= len) throw new scala.IndexOutOfBoundsException(n.toString)
     if (exported) copy()
     if (n == 0) {
-      val newElem = new :: (x, start.tail)
+      val newElem = new ::(x, start.tail)
       if (last0 eq start) {
         last0 = newElem
       }
       start = newElem
     } else {
       var cursor = start
-      var i = 1
+      var i      = 1
       while (i < n) {
         cursor = cursor.tail
         i += 1
       }
-      val newElem = new :: (x, cursor.tail.tail)
+      val newElem = new ::(x, cursor.tail.tail)
       if (last0 eq cursor.tail) {
         last0 = newElem
       }
@@ -103,14 +104,14 @@ final class ListBuffer[A] {
    *  @param x  the element to append.
    *  @return   this $coll.
    */
-  def += (x: A): this.type = {
+  def +=(x: A): this.type = {
     if (exported) copy()
     if (isEmpty) {
-      last0 = new :: (x, Nil)
+      last0 = new ::(x, Nil)
       start = last0
     } else {
       val last1 = last0
-      last0 = new :: (x, Nil)
+      last0 = new ::(x, Nil)
       last1.next = last0
     }
     len += 1
@@ -132,9 +133,9 @@ final class ListBuffer[A] {
    *  @param x  the element to prepend.
    *  @return   this $coll.
    */
-  def +=: (x: A): this.type = {
+  def +=:(x: A): this.type = {
     if (exported) copy()
-    val newElem = new :: (x, start)
+    val newElem = new ::(x, start)
     if (isEmpty) last0 = newElem
     start = newElem
     len += 1
@@ -146,7 +147,7 @@ final class ListBuffer[A] {
    */
   private def reduceLengthBy(num: Int): Unit = {
     len -= num
-    if (len <= 0)   // obviously shouldn't be < 0, but still better not to leak
+    if (len <= 0) // obviously shouldn't be < 0, but still better not to leak
       last0 = null
   }
 
@@ -160,11 +161,15 @@ final class ListBuffer[A] {
    *  @throws   IllegalArgumentException if `count < 0`.
    */
   def remove(n: Int, count: Int): Unit = {
-    if (count < 0) throw new scala.IllegalArgumentException("removing negative number of elements: " + count.toString)
-    else if (count == 0) return  // Nothing to do
-    if (n < 0 || n > len - count) throw new scala.IndexOutOfBoundsException("at " + n.toString + " deleting " + count.toString)
+    if (count < 0)
+      throw new scala.IllegalArgumentException(
+        "removing negative number of elements: " + count.toString)
+    else if (count == 0) return // Nothing to do
+    if (n < 0 || n > len - count)
+      throw new scala.IndexOutOfBoundsException(
+        "at " + n.toString + " deleting " + count.toString)
     if (exported) copy()
-    val n1 = java.lang.Math.max(n, 0)
+    val n1     = java.lang.Math.max(n, 0)
     val count1 = java.lang.Math.min(count, (len - n1))
     if (n1 == 0) {
       var c = count1
@@ -174,7 +179,7 @@ final class ListBuffer[A] {
       }
     } else {
       var cursor = start
-      var i = 1
+      var i      = 1
       while (i < n1) {
         cursor = cursor.tail
         i += 1
@@ -231,14 +236,15 @@ final class ListBuffer[A] {
    *  @throws IndexOutOfBoundsException if `n` is out of bounds.
    */
   def remove(n: Int): A = {
-    if (n < 0 || n >= len) throw new scala.IndexOutOfBoundsException(n.toString())
+    if (n < 0 || n >= len)
+      throw new scala.IndexOutOfBoundsException(n.toString())
     if (exported) copy()
     var old = start.head
     if (n == 0) {
       start = start.tail
     } else {
       var cursor = start
-      var i = 1
+      var i      = 1
       while (i < n) {
         cursor = cursor.tail
         i += 1
@@ -257,14 +263,12 @@ final class ListBuffer[A] {
    *  @param elem  the element to remove.
    *  @return      this $coll.
    */
-  def -= (elem: A): this.type = {
+  def -=(elem: A): this.type = {
     if (exported) copy()
-    if (isEmpty) {}
-    else if (start.head == elem) {
+    if (isEmpty) {} else if (start.head == elem) {
       start = start.tail
       reduceLengthBy(1)
-    }
-    else {
+    } else {
       var cursor = start
       while (!cursor.tail.isEmpty && cursor.tail.head != elem) {
         cursor = cursor.tail
@@ -288,7 +292,8 @@ final class ListBuffer[A] {
    *  @throws NoSuchElementException if this buffer is empty.
    */
   def last: A =
-    if (last0 eq null) throw new scala.NoSuchElementException("last of empty ListBuffer")
+    if (last0 eq null)
+      throw new scala.NoSuchElementException("last of empty ListBuffer")
     else last0.head
 
   /** Optionally selects the last element.
@@ -305,7 +310,7 @@ final class ListBuffer[A] {
   private def copy(): Unit = {
     if (isEmpty) return
     var cursor = start
-    val limit = last0.tail
+    val limit  = last0.tail
     clear()
     while (cursor ne limit) {
       this += cursor.head
@@ -324,4 +329,3 @@ final class ListBuffer[A] {
    */
   def stringPrefix: String = "ListBuffer"
 }
-

@@ -13,7 +13,8 @@ class Point(val x: Double, val y: Double, val z: Double) {
     square(that.x - x) + square(that.y - y) + square(that.z - z)
   }
   private def round(v: Double): Double = (v * 100).toInt / 100.0
-  override def toString                = "(" + round(x) + "}, " + round(y)+  ", " + round(z) + ")"
+  override def toString =
+    "(" + round(x) + "}, " + round(y) + ", " + round(z) + ")"
 }
 
 object KmeansBenchmark extends communitybench.Benchmark {

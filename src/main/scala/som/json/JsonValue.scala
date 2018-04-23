@@ -126,7 +126,8 @@ abstract class JsonValue {
    *           if this value is not a JSON object
    */
   def asObject(): JsonObject =
-    throw new scala.UnsupportedOperationException("Not an object: " + toString());
+    throw new scala.UnsupportedOperationException(
+      "Not an object: " + toString());
 
   /**
    * Returns this JSON value as {@link JsonArray}, assuming that this value represents a JSON array.
@@ -137,5 +138,6 @@ abstract class JsonValue {
    *           if this value is not a JSON array
    */
   def asArray(): JsonArray =
-    throw new scala.UnsupportedOperationException("Not an array: " + toString());
+    throw new scala.UnsupportedOperationException(
+      "Not an array: " + toString());
 }
