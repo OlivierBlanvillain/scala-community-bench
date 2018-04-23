@@ -10,13 +10,14 @@ abstract class Benchmark {
 
   final def main(args: Array[String]): Unit = {
     assert(
-      args.length == 3,
-      "need to provide a number of iterations, input and expected output (got: " + args.length + ")")
-    val iterations = args(0).toInt
-    val input      = args(1)
-    val output     = args(2)
+      args.length == 4,
+      "4 arguments expected: number of batches, batch size, input and expected output")
+    val batches   = args(0).toInt
+    val batchSize = args(1).toInt
+    val input     = args(2)
+    val output    = args(3)
 
-    dump(loop(input, output, iterations))
+    dump(loop(batches, batchSize, input, output))
   }
 
   final def dump(times: Array[Long]): Unit = {
@@ -27,24 +28,41 @@ abstract class Benchmark {
     }
   }
 
-  final def loop(input: String,
-                 output: String,
-                 iterations: Int): Array[Long] = {
-    var i     = 0
-    val times = new Array[Long](iterations)
+  final def loop(batches: Int,
+                 batchSize: Int,
+                 input: String,
+                 output: String): Array[Long] = {
+    assert(batches >= 1)
+    assert(batchSize >= 1)
 
-    while (i < iterations) {
-      val start  = System.nanoTime()
-      val result = run(input)
-      val end    = System.nanoTime()
+    var i       = 0
+    val times   = new Array[Long](batches)
+    val results = new Array[Any](batchSize)
 
-      if (result.toString != output) {
-        throw new java.lang.Exception(
-          "validation failed: expected `" + output + "` got `" + result + "`")
+    while (i < batches) {
+      val start = System.nanoTime()
+
+      var j = 0
+      while (j < batchSize) {
+        results(j) = run(input)
+        j += 1
+      }
+
+      val end = System.nanoTime()
+
+      j = 0
+      while (j < batchSize) {
+        val result = results(j)
+        if (result.toString != output) {
+          throw new java.lang.Exception(
+            "validation failed: expected `" + output + "` got `" + result + "`")
+        }
+        results(j) = null
+        j += 1
       }
 
       times(i) = end - start
-      i = i + 1
+      i += 1
     }
 
     times

@@ -65,7 +65,8 @@ benchmarks = [
 ]
 
 runs = 1
-iterations = 1
+batches = 1
+batch_size = 1
 
 if __name__ == "__main__":
     with open('build.sbt', 'w') as build:
@@ -83,7 +84,7 @@ if __name__ == "__main__":
             cmd = [java]
             cmd.extend(java_opts)
             cmd.extend(['-classpath', ':'.join(classpath)])
-            cmd.extend([bench, str(iterations), input, output])
+            cmd.extend([bench, str(batches), str(batch_size), input, output])
             result = run(cmd)
             with open('results/{}/{}'.format(bench, n), 'w+') as resultfile:
                 resultfile.write(result)
