@@ -139,7 +139,7 @@ object CollisionDetector {
       return
     }
 
-    if (seen.put(nextVoxel, true) == TRUE) {
+    if (TRUE.equals(seen.put(nextVoxel, true))) {
       return
     }
 

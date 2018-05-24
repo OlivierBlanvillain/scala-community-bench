@@ -21,8 +21,9 @@
  ******************************************************************************/
 package json
 
-import scala.{Int, Boolean}
+import scala.{Int, Boolean, Array, Any, Unit}
 import java.lang.String
+import org.openjdk.jmh.annotations._
 
 /**
  * This benchmark uses a variant of the JsonParser that operates only on
@@ -30,12 +31,18 @@ import java.lang.String
  * comparison of what the SOM implementation does.
  * @author smarr
  */
-object JsonBenchmark extends communitybench.Benchmark {
-  def run(input: String): Int = {
+ @State(Scope.Benchmark)
+ class JsonBenchmark extends communitybench.Benchmark {
+  @Benchmark
+  def run(): Any = {
     val result = (new JsonPureStringParser(input)).parse()
     if (!result.isObject()) { return 0 }
     if (!result.asObject().get("head").isObject()) { return 0 }
     if (!result.asObject().get("operations").isArray()) { return 0 }
     result.asObject().get("operations").asArray().size()
   }
+}
+object JsonBenchmark {
+  def main(args: Array[String]): Unit =
+    new JsonBenchmark().batchRun(args)
 }

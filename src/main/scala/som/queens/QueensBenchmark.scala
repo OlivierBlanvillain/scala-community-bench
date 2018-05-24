@@ -23,16 +23,19 @@
 package queens
 
 import scala.Predef.intWrapper
-import scala.{Int, Boolean, Array, Unit}
+import scala.{Int, Boolean, Unit, Array, Any}
 import java.lang.String
+import org.openjdk.jmh.annotations._
 
-object QueensBenchmark extends communitybench.Benchmark {
+@State(Scope.Benchmark)
+class QueensBenchmark extends communitybench.Benchmark {
   var freeMaxs: Array[Boolean] = _
   var freeRows: Array[Boolean] = _
   var freeMins: Array[Boolean] = _
   var queenRows: Array[Int]    = _
 
-  def run(input: String): Boolean = {
+  @Benchmark
+  def run(): Any = {
     freeRows = Array.fill(8)(true)
     freeMaxs = Array.fill(16)(true)
     freeMins = Array.fill(16)(true)
@@ -68,4 +71,8 @@ object QueensBenchmark extends communitybench.Benchmark {
     freeMaxs(c + r) = v
     freeMins(c - r + 7) = v
   }
+}
+object QueensBenchmark {
+  def main(args: Array[String]): Unit =
+    new QueensBenchmark().batchRun(args)
 }

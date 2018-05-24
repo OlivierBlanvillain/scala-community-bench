@@ -16,10 +16,12 @@
 
 package tracer
 
-import scala.{Unit, Boolean}
+import scala.{Unit, Boolean, Array, Any}
 import java.lang.String
+import org.openjdk.jmh.annotations._
 
-object TracerBenchmark extends communitybench.Benchmark {
+@State(Scope.Benchmark)
+class TracerBenchmark extends communitybench.Benchmark {
 
   val config = EngineConfiguration(
     imageWidth = 100,
@@ -33,6 +35,11 @@ object TracerBenchmark extends communitybench.Benchmark {
     renderReflections = true
   )
 
-  def run(input: String): Unit =
+  @Benchmark
+  def run(): Any =
     new RenderScene().renderScene(config, null)
+}
+object TracerBenchmark {
+  def main(args: Array[String]): Unit =
+    new TracerBenchmark().batchRun(args)
 }

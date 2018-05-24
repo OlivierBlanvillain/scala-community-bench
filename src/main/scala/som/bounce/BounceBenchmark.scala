@@ -26,37 +26,41 @@ import som.Random
 import scala.Predef.augmentString
 import scala.Predef.intWrapper
 import scala.Predef.genericArrayOps
-import scala.{Int, Boolean, Array}
+import scala.{Int, Boolean, Array, Any, Unit}
 import java.lang.{Math, String}
 
-object BounceBenchmark extends communitybench.Benchmark {
-  private class Ball(random: Random) {
-    private var x: Int    = random.next()  % 500
-    private var y: Int    = random.next()  % 500
-    private var xVel: Int = (random.next() % 300) - 150
-    private var yVel: Int = (random.next() % 300) - 150
+import org.openjdk.jmh.annotations._
 
-    def bounce(): Boolean = {
-      val xLimit: Int = 500
-      val yLimit: Int = 500
-      var bounced     = false
+private class Ball(random: Random) {
+  private var x: Int    = random.next()  % 500
+  private var y: Int    = random.next()  % 500
+  private var xVel: Int = (random.next() % 300) - 150
+  private var yVel: Int = (random.next() % 300) - 150
 
-      x += xVel;
-      y += yVel;
-      if (x > xLimit) {
-        x = xLimit; xVel = 0 - Math.abs(xVel); bounced = true;
-      }
-      if (x < 0) { x = 0; xVel = Math.abs(xVel); bounced = true; }
-      if (y > yLimit) {
-        y = yLimit; yVel = 0 - Math.abs(yVel); bounced = true;
-      }
-      if (y < 0) { y = 0; yVel = Math.abs(yVel); bounced = true; }
+  def bounce(): Boolean = {
+    val xLimit: Int = 500
+    val yLimit: Int = 500
+    var bounced     = false
 
-      bounced
+    x += xVel;
+    y += yVel;
+    if (x > xLimit) {
+      x = xLimit; xVel = 0 - Math.abs(xVel); bounced = true;
     }
-  }
+    if (x < 0) { x = 0; xVel = Math.abs(xVel); bounced = true; }
+    if (y > yLimit) {
+      y = yLimit; yVel = 0 - Math.abs(yVel); bounced = true;
+    }
+    if (y < 0) { y = 0; yVel = Math.abs(yVel); bounced = true; }
 
-  def run(input: String): Int = {
+    bounced
+  }
+}
+
+@State(Scope.Benchmark)
+class BounceBenchmark extends communitybench.Benchmark {
+  @Benchmark
+  def run(): Any = {
     val random = new Random()
 
     val ballCount = input.toInt
@@ -73,4 +77,8 @@ object BounceBenchmark extends communitybench.Benchmark {
 
     bounces
   }
+}
+object BounceBenchmark {
+  def main(args: Array[String]): Unit =
+    new BounceBenchmark().batchRun(args)
 }

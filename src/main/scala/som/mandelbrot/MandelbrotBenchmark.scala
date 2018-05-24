@@ -42,13 +42,16 @@
 // http://benchmarksgame.alioth.debian.org/u64q/program.php?test=mandelbrot&lang=yarv&id=3
 package mandelbrot
 
-import scala.{Int, Double, Boolean}
+import scala.{Int, Double, Boolean, Array, Any, Unit}
 import java.lang.String
 import scala.Predef.augmentString
 import stdlib._
+import org.openjdk.jmh.annotations._
 
-object MandelbrotBenchmark extends communitybench.Benchmark {
-  def run(input: String): Int = {
+@State(Scope.Benchmark)
+class MandelbrotBenchmark extends communitybench.Benchmark {
+  @Benchmark
+  def run(): Any = {
     val size         = input.toInt
     var sum: Int     = 0
     var byteAcc: Int = 0
@@ -105,4 +108,8 @@ object MandelbrotBenchmark extends communitybench.Benchmark {
     }
     return sum
   }
+}
+object MandelbrotBenchmark {
+  def main(args: Array[String]): Unit =
+    new MandelbrotBenchmark().batchRun(args)
 }

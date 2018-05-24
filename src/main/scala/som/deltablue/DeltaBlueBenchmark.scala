@@ -30,11 +30,12 @@
 
 package deltablue
 
-import scala.{Int, Unit, Boolean}
+import scala.{Int, Unit, Boolean, Array, Any}
 import java.lang.{Exception, String}
 import stdlib._
 import scala.Predef.intWrapper
 import scala.Predef.augmentString
+import org.openjdk.jmh.annotations._
 
 /**
  * A Scala implementation of the DeltaBlue constraint-solving
@@ -50,8 +51,10 @@ import scala.Predef.augmentString
  * I've kept it this way to avoid deviating too much from the original
  * implementation.
  */
-object DeltaBlueBenchmark extends communitybench.Benchmark {
-  def run(input: String): Unit = {
+@State(Scope.Benchmark)
+class DeltaBlueBenchmark extends communitybench.Benchmark {
+  @Benchmark
+  def run(): Any = {
     val n = input.toInt
     chainTest(n)
     projectionTest(n)
@@ -142,6 +145,10 @@ object DeltaBlueBenchmark extends communitybench.Benchmark {
     }
     edit.destroyConstraint
   }
+}
+object DeltaBlueBenchmark {
+  def main(args: Array[String]): Unit =
+    new DeltaBlueBenchmark().batchRun(args)
 }
 
 /**

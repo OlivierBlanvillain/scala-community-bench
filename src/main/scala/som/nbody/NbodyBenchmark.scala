@@ -5,12 +5,15 @@
  */
 package nbody
 
-import scala.{Double, Boolean}
+import scala.{Double, Boolean, Unit, Array, Any}
 import java.lang.String
 import scala.Predef.augmentString
+import org.openjdk.jmh.annotations._
 
-object NbodyBenchmark extends communitybench.Benchmark {
-  def run(input: String): Boolean = {
+@State(Scope.Benchmark)
+class NbodyBenchmark extends communitybench.Benchmark {
+  @Benchmark
+  def run(): Any = {
     val system = new NBodySystem()
     val n      = input.toInt
 
@@ -22,4 +25,8 @@ object NbodyBenchmark extends communitybench.Benchmark {
 
     system.energy() == -0.1690859889909308
   }
+}
+object NbodyBenchmark {
+  def main(args: Array[String]): Unit =
+    new NbodyBenchmark().batchRun(args)
 }
