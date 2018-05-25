@@ -28,12 +28,19 @@ package brainfuck
 import scala.Predef.genericArrayOps
 import scala.Predef.wrapString
 import java.lang.String
-import scala.{Int, Unit, Char, Array}
+import scala.{Int, Unit, Char, Array, Any}
 import stdlib._
+import org.openjdk.jmh.annotations._
 
-object BrainfuckBenchmark extends communitybench.Benchmark {
-  def run(input: String): Int =
+@State(Scope.Benchmark)
+class BrainfuckBenchmark extends communitybench.Benchmark {
+  @Benchmark
+  def run(): Any =
     new Program(input).run.size
+}
+object BrainfuckBenchmark {
+  def main(args: Array[String]): Unit =
+    new BrainfuckBenchmark().batchRun(args)
 }
 
 abstract class Op

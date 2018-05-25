@@ -40,14 +40,17 @@
 
 package gcbench
 
-import scala.{Int, Double, Boolean, Unit, Array}
+import scala.{Int, Double, Boolean, Unit, Array, Any}
 import java.lang.String
+import org.openjdk.jmh.annotations._
 
 class Node(var left: Node, var right: Node, var i: Int, var j: Int)
 
-object GCBenchBenchmark extends communitybench.Benchmark {
-  def run(input: String): Boolean = {
-    val (node, doubles) = GCBenchBenchmark.start()
+@State(Scope.Benchmark)
+class GCBenchBenchmark extends communitybench.Benchmark {
+  @Benchmark
+  def run(): Any = {
+    val (node, doubles) = start()
     node != null && doubles(1000) == 1.0 / 1000
   }
 
@@ -133,4 +136,8 @@ object GCBenchBenchmark extends communitybench.Benchmark {
 
     (longLivedTree, array)
   }
+}
+object GCBenchBenchmark {
+  def main(args: Array[String]): Unit =
+    new GCBenchBenchmark().batchRun(args)
 }

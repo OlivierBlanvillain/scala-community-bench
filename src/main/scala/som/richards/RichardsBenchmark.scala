@@ -47,15 +47,18 @@ package richards
 
 import scala.Predef.intWrapper
 import java.lang.String
-import scala.{Int, Boolean, Unit, Array}
+import scala.{Int, Boolean, Unit, Array, Any}
+import org.openjdk.jmh.annotations._
 
 /**
  * Richards simulates the task dispatcher of an operating system.
  */
-object RichardsBenchmark extends communitybench.Benchmark {
+ @State(Scope.Benchmark)
+ class RichardsBenchmark extends communitybench.Benchmark {
   import Richards._
 
-  def run(input: String): (Int, Int) = {
+  @Benchmark
+  def run(): Any = {
     val scheduler = new Scheduler()
     scheduler.addIdleTask(ID_IDLE, 0, null, COUNT)
 
@@ -91,6 +94,10 @@ object RichardsBenchmark extends communitybench.Benchmark {
    */
   final val EXPECTED_QUEUE_COUNT = 2322
   final val EXPECTED_HOLD_COUNT  = 928
+}
+object RichardsBenchmark {
+  def main(args: Array[String]): Unit =
+    new RichardsBenchmark().batchRun(args)
 }
 
 object Richards {
@@ -470,5 +477,4 @@ class Packet(var link: Packet, var id: Int, val kind: Int) {
       queue
     }
   }
-
 }

@@ -22,11 +22,13 @@
  */
 package list
 
-import scala.{Int, Boolean, Any}
+import scala.{Int, Boolean, Array, Any, Unit}
 import java.lang.String
 import scala.Predef.augmentString
+import org.openjdk.jmh.annotations._
 
-object ListBenchmark extends communitybench.Benchmark {
+@State(Scope.Benchmark)
+class ListBenchmark extends communitybench.Benchmark {
   final class Element(var value: Any, var next: Element = null) {
     def length(): Int = {
       if (next == null) {
@@ -37,7 +39,8 @@ object ListBenchmark extends communitybench.Benchmark {
     }
   }
 
-  def run(input: String): Int = {
+  @Benchmark
+  def run(): Any = {
     val n      = input.toInt
     val result = tail(makeList(n * 3), makeList(n * 2), makeList(n))
     result.length()
@@ -71,4 +74,8 @@ object ListBenchmark extends communitybench.Benchmark {
       z
     }
   }
+}
+object ListBenchmark {
+  def main(args: Array[String]): Unit =
+    new ListBenchmark().batchRun(args)
 }

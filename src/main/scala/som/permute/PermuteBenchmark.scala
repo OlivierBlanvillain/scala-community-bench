@@ -2,11 +2,14 @@ package permute
 
 import scala.Predef.intWrapper
 import scala.Predef.augmentString
-import scala.{Int, Boolean, Unit}
+import scala.{Int, Boolean, Unit, Array, Any}
 import java.lang.String
+import org.openjdk.jmh.annotations._
 
-object PermuteBenchmark extends communitybench.Benchmark {
-  def run(input: String): Int = {
+@State(Scope.Benchmark)
+class PermuteBenchmark extends communitybench.Benchmark {
+  @Benchmark
+  def run(): Any = {
     val size     = input.toInt
     val permIter = (0 until size).toList.permutations
 
@@ -27,4 +30,8 @@ object PermuteBenchmark extends communitybench.Benchmark {
     }
     fact
   }
+}
+object PermuteBenchmark {
+  def main(args: Array[String]): Unit =
+    new PermuteBenchmark().batchRun(args)
 }

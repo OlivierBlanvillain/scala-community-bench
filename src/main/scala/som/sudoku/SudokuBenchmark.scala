@@ -11,13 +11,15 @@
 package sudoku
 
 import scala.language.implicitConversions
-import scala.Predef.wrapString
-import scala.Predef.require
+import scala.Predef.{wrapString, require, identity}
 import java.lang.String
-import scala.{Int, Boolean, Unit, Option, Some, None, Nil}
+import scala.{Int, Boolean, Unit, Option, Some, None, Nil, Array, Any}
+import org.openjdk.jmh.annotations._
 
-object SudokuBenchmark extends communitybench.Benchmark {
-  override def run(input: String): Option[Grid] =
+@State(Scope.Benchmark)
+class SudokuBenchmark extends communitybench.Benchmark {
+  @Benchmark
+  def run(): Any =
     solve(input)
 
   def cross(as: String, bs: String) =
@@ -39,7 +41,7 @@ object SudokuBenchmark extends communitybench.Benchmark {
   val peers =
     squares
       .map(s =>
-        (s, units(s).flatten(scala.Predef.conforms).toSet.filterNot(_ == s)))
+        (s, units(s).flatten(identity).toSet.filterNot(_ == s)))
       .toMap
 
   type Grid = scala.collection.mutable.Map[String, String]
@@ -221,4 +223,8 @@ object SudokuBenchmark extends communitybench.Benchmark {
     else
       repeat(pad, padLen / 2) + s + repeat(pad, (padLen + 1) / 2)
   }
+}
+object SudokuBenchmark {
+  def main(args: Array[String]): Unit =
+    new SudokuBenchmark().batchRun(args)
 }

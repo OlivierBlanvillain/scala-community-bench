@@ -24,11 +24,14 @@ package cd
 import som._
 import scala.Predef.augmentString
 import scala.Predef.intWrapper
-import scala.{Int, Boolean}
+import scala.{Int, Boolean, Array, Any, Unit}
 import java.lang.String
+import org.openjdk.jmh.annotations._
 
-object CDBenchmark extends communitybench.Benchmark {
-  def run(input: String): Int = {
+@State(Scope.Benchmark)
+class CDBenchmark extends communitybench.Benchmark {
+  @Benchmark
+  def run(): Any = {
     val numAircrafts     = input.toInt
     val numFrames        = 200
     val simulator        = new Simulator(numAircrafts)
@@ -43,4 +46,8 @@ object CDBenchmark extends communitybench.Benchmark {
 
     actualCollisions
   }
+}
+object CDBenchmark {
+  def main(args: Array[String]): Unit =
+    new CDBenchmark().batchRun(args)
 }

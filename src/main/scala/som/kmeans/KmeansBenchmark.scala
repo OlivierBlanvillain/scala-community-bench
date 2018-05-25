@@ -4,8 +4,9 @@ import scala.collection._
 import scala.util.Random
 import scala.Predef.augmentString
 import scala.Predef.intWrapper
-import scala.{Int, Double, Boolean}
+import scala.{Int, Double, Boolean, Array, Any, Unit}
 import java.lang.String
+import org.openjdk.jmh.annotations._
 
 class Point(val x: Double, val y: Double, val z: Double) {
   private def square(v: Double): Double = v * v
@@ -17,7 +18,26 @@ class Point(val x: Double, val y: Double, val z: Double) {
     "(" + round(x) + "}, " + round(y) + ", " + round(z) + ")"
 }
 
-object KmeansBenchmark extends communitybench.Benchmark {
+@State(Scope.Benchmark)
+class KmeansBenchmark extends communitybench.Benchmark {
+  @Benchmark
+  def run(): Any = {
+    val numPoints              = input.toInt
+    val eta                    = 0.01
+    val k                      = 32
+    val points                 = generatePoints(k, numPoints)
+    val means                  = initializeMeans(k, points)
+    var centers: GenSeq[Point] = null
+    val result                 = kMeans(points, means, eta)
+    var sum                    = 0D
+    result.foreach { p =>
+      sum += p.x
+      sum += p.y
+      sum += p.z
+    }
+    sum == 71.5437923802926D
+  }
+
   def generatePoints(k: Int, num: Int): Seq[Point] = {
     val randx = new Random(1)
     val randy = new Random(3)
@@ -111,21 +131,8 @@ object KmeansBenchmark extends communitybench.Benchmark {
       newMeans
     }
   }
-
-  def run(input: String): Boolean = {
-    val numPoints              = input.toInt
-    val eta                    = 0.01
-    val k                      = 32
-    val points                 = generatePoints(k, numPoints)
-    val means                  = initializeMeans(k, points)
-    var centers: GenSeq[Point] = null
-    val result                 = kMeans(points, means, eta)
-    var sum                    = 0D
-    result.foreach { p =>
-      sum += p.x
-      sum += p.y
-      sum += p.z
-    }
-    sum == 71.5437923802926D
-  }
+}
+object KmeansBenchmark {
+  def main(args: Array[String]): Unit =
+    new KmeansBenchmark().batchRun(args)
 }
