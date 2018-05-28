@@ -73,4 +73,7 @@ object BounceBenchmark extends communitybench.Benchmark {
 
     bounces
   }
+
+  override def main(args: Array[String]): Unit =
+    super.main(args)
 }

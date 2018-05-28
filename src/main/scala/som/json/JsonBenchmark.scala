@@ -38,4 +38,7 @@ object JsonBenchmark extends communitybench.Benchmark {
     if (!result.asObject().get("operations").isArray()) { return 0 }
     result.asObject().get("operations").asArray().size()
   }
+
+  override def main(args: Array[String]): Unit =
+    super.main(args)
 }

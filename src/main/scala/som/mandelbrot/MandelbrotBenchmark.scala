@@ -105,4 +105,7 @@ object MandelbrotBenchmark extends communitybench.Benchmark {
     }
     return sum
   }
+
+  override def main(args: Array[String]): Unit =
+    super.main(args)
 }

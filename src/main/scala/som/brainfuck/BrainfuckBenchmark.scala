@@ -34,6 +34,9 @@ import stdlib._
 object BrainfuckBenchmark extends communitybench.Benchmark {
   def run(input: String): Int =
     new Program(input).run.size
+
+  override def main(args: Array[String]): Unit =
+    super.main(args)
 }
 
 abstract class Op

@@ -43,4 +43,7 @@ object CDBenchmark extends communitybench.Benchmark {
 
     actualCollisions
   }
+
+  override def main(args: Array[String]): Unit =
+    super.main(args)
 }

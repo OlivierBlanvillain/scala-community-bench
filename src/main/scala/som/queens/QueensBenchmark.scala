@@ -37,8 +37,7 @@ object QueensBenchmark extends communitybench.Benchmark {
     freeMaxs = Array.fill(16)(true)
     freeMins = Array.fill(16)(true)
     queenRows = Array.fill(8)(-1)
-
-    placeQueen(0)
+placeQueen(0)
   }
 
   def placeQueen(c: Int): Boolean = {
@@ -68,4 +67,7 @@ object QueensBenchmark extends communitybench.Benchmark {
     freeMaxs(c + r) = v
     freeMins(c - r + 7) = v
   }
+
+  override def main(args: Array[String]): Unit =
+    super.main(args)
 }

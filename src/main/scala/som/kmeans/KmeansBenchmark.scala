@@ -128,4 +128,7 @@ object KmeansBenchmark extends communitybench.Benchmark {
     }
     sum == 71.5437923802926D
   }
+
+  override def main(args: Array[String]): Unit =
+    super.main(args)
 }

@@ -20,6 +20,9 @@ object SudokuBenchmark extends communitybench.Benchmark {
   override def run(input: String): Option[Grid] =
     solve(input)
 
+  override def main(args: Array[String]): Unit =
+    super.main(args)
+
   def cross(as: String, bs: String) =
     for (a <- as.map(_.toString); b <- bs.map(_.toString)) yield a + b
 

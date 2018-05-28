@@ -51,6 +51,9 @@ object GCBenchBenchmark extends communitybench.Benchmark {
     node != null && doubles(1000) == 1.0 / 1000
   }
 
+  override def main(args: Array[String]): Unit =
+    super.main(args)
+
   val kStretchTreeDepth: Int   = 18 // about 16Mb
   val kLongLivedTreeDepth: Int = 16 // about 4Mb
   val kArraySize: Int          = 500000 // about 4Mb

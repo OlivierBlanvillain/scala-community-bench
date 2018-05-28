@@ -43,6 +43,9 @@ object ListBenchmark extends communitybench.Benchmark {
     result.length()
   }
 
+  override def main(args: Array[String]): Unit =
+    super.main(args)
+
   def makeList(length: Int): Element = {
     if (length == 0) { return null } else {
       val e = new Element(length)

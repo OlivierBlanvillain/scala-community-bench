@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-
 import sys
 import os
 import errno
 import subprocess as subp
+import shutil as sh
 
 def mkdir(path):
     try:
@@ -13,6 +13,10 @@ def mkdir(path):
             pass
         else:
             raise
+
+def slurp(path):
+    with open(path) as f:
+        return f.read().strip()
 
 def where(cmd):
     if os.path.isfile(cmd):
@@ -30,62 +34,77 @@ def run(cmd):
     print(">>> " + str(cmd))
     return subp.check_output(cmd)
 
-def compile():
-    return run(['sbt', 'compile'])
+def compile(bench, compilecmd):
+    cmd = [sbt, 'clean']
+    cmd.append('set mainClass in Compile := Some("{}")'.format(bench))
+    cmd.append(compilecmd)
+    return run(cmd)
 
 sbt = where('sbt')
-java = where('java')
-
-java_opts = ['-Xms1024M', '-Xmx1024M']
-
-scalaVersion = '2.11.12'
-scalaBinaryVersion = '.'.join(scalaVersion.split('.')[:2])
-
-classpath = [
-        os.path.abspath('target/scala-{}/classes'.format(scalaBinaryVersion)),
-        os.path.expanduser('~/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-{}.jar'.format(scalaVersion)),
-]
 
 benchmarks = [
         'bounce.BounceBenchmark',
-        'brainfuck.BrainfuckBenchmark',
-        'cd.CDBenchmark',
-        'deltablue.DeltaBlueBenchmark',
-        'gcbench.GCBenchBenchmark',
-        'json.JsonBenchmark',
-        'kmeans.KmeansBenchmark',
         'list.ListBenchmark',
-        'mandelbrot.MandelbrotBenchmark',
-        'nbody.NbodyBenchmark',
-        'permute.PermuteBenchmark',
-        'queens.QueensBenchmark',
         'richards.RichardsBenchmark',
-        'sudoku.SudokuBenchmark',
+        'queens.QueensBenchmark',
+        'permute.PermuteBenchmark',
+        'deltablue.DeltaBlueBenchmark',
         'tracer.TracerBenchmark',
+        'brainfuck.BrainfuckBenchmark',
+        'json.JsonBenchmark',
+        # 'cd.CDBenchmark',
+        'kmeans.KmeansBenchmark',
+        'gcbench.GCBenchBenchmark',
+        # 'mandelbrot.MandelbrotBenchmark',
+        # 'nbody.NbodyBenchmark',
+        # 'sudoku.SudokuBenchmark',
 ]
 
-runs = 1
-batches = 1
+configurations = [
+        'jvm',
+        # '0.3.7',
+        # '6cc2d0', # -flto
+        # 'd0e87b', # improved bounce & brainfuck, unlocked json
+        # 'a0f53f', # fix json
+        '399c8d', # gc prefetch
+        'snapshot'
+]
+
+runs = 5
+batches = 4000
 batch_size = 1
 
 if __name__ == "__main__":
-    with open('build.sbt', 'w') as build:
-        build.write('scalaVersion := "{}"'.format(scalaVersion))
-    compile()
-    for bench in benchmarks:
-        input = ''
-        output = ''
-        with open('input/' + bench) as inputfile:
-            input = inputfile.read().strip()
-        with open('output/' + bench) as outputfile:
-            output = outputfile.read().strip()
-        for n in xrange(runs):
-            mkdir('results/{}/'.format(bench))
-            cmd = [java]
-            cmd.extend(java_opts)
-            cmd.extend(['-classpath', ':'.join(classpath)])
-            cmd.extend([bench, str(batches), str(batch_size), input, output])
-            result = run(cmd)
-            with open('results/{}/{}'.format(bench, n), 'w+') as resultfile:
-                resultfile.write(result)
+    for conf in configurations:
+        for bench in benchmarks:
+            print('--- conf: {}, bench: {}'.format(conf, bench))
+
+            input = slurp(os.path.join('input', bench))
+            output = slurp(os.path.join('output', bench))
+            compilecmd = slurp(os.path.join('confs', conf, 'compile'))
+            runcmd = slurp(os.path.join('confs', conf, 'run')).replace('$BENCH', bench).split(' ')
+
+            if os.path.exists(os.path.join('confs', conf, 'build.sbt')):
+                sh.copyfile(os.path.join('confs', conf, 'build.sbt'), 'build.sbt')
+            else:
+                os.remove('build.sbt')
+
+            if os.path.exists(os.path.join('confs', conf, 'plugins.sbt')):
+                sh.copyfile(os.path.join('confs', conf, 'plugins.sbt'), 'project/build.sbt')
+            else:
+                os.remove('project/plugins.sbt')
+
+            compile(bench, compilecmd)
+            resultsdir = os.path.join('results', conf, bench)
+            mkdir(resultsdir)
+
+            for n in xrange(runs):
+                print('--- run {}/{}'.format(n, runs))
+
+                cmd = []
+                cmd.extend(runcmd)
+                cmd.extend([str(batches), str(batch_size), input, output])
+                out = run(cmd)
+                with open(os.path.join(resultsdir, str(n)), 'w+') as resultfile:
+                    resultfile.write(out)
 

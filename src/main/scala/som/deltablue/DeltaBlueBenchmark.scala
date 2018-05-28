@@ -57,6 +57,9 @@ object DeltaBlueBenchmark extends communitybench.Benchmark {
     projectionTest(n)
   }
 
+  override def main(args: Array[String]): Unit =
+    super.main(args)
+
   /**
    * This is the standard DeltaBlue benchmark. A long chain of equality
    * constraints is constructed with a stay constraint on one end. An

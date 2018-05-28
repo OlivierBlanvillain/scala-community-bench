@@ -82,6 +82,9 @@ object RichardsBenchmark extends communitybench.Benchmark {
     (scheduler.queueCount, scheduler.holdCount)
   }
 
+  override def main(args: Array[String]): Unit =
+    super.main(args)
+
   /**
    * These two constants specify how many times a packet is queued and
    * how many times a task is put on hold in a correct run of richards.

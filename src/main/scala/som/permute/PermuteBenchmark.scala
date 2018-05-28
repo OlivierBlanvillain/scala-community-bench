@@ -27,4 +27,7 @@ object PermuteBenchmark extends communitybench.Benchmark {
     }
     fact
   }
+
+  override def main(args: Array[String]): Unit =
+    super.main(args)
 }

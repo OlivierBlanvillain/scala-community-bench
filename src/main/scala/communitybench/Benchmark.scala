@@ -8,7 +8,7 @@ import scala.Predef.augmentString
 abstract class Benchmark {
   def run(input: String): Any
 
-  final def main(args: Array[String]): Unit = {
+  def main(args: Array[String]): Unit = {
     assert(
       args.length == 4,
       "4 arguments expected: number of batches, batch size, input and expected output")
@@ -20,7 +20,7 @@ abstract class Benchmark {
     dump(loop(batches, batchSize, input, output))
   }
 
-  final def dump(times: Array[Long]): Unit = {
+  def dump(times: Array[Long]): Unit = {
     var i = 0
     while (i < times.length) {
       System.out.println(times(i))
@@ -28,7 +28,7 @@ abstract class Benchmark {
     }
   }
 
-  final def loop(batches: Int,
+  def loop(batches: Int,
                  batchSize: Int,
                  input: String,
                  output: String): Array[Long] = {
